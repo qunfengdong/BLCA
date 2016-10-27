@@ -7,7 +7,7 @@ import re
 import os
 import getopt
 
-__author__ = "Huaiying Lin, Xiang Gao, Qunfeng Dong"
+__author__ = "Xiang Gao, Huaiying Lin, Qunfeng Dong"
 __copyright__ = "Copyright 2016, Bayesian-based LCA taxonomic classification"
 __credits__ = ["Xiang Gao", "Huaiying Lin","Qunfeng Dong"]
 __license__ = "GPL"
