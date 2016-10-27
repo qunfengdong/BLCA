@@ -2,11 +2,11 @@ Bayesian-based LCA taxonomic classification method
 --------------------------------------------------
 Bayesian LCA-based Taxonomic Classification Method (BLCA) is a Bayesian-based method that provides a solid probabilistic basis for evaluating the taxonomic assignments for the query sequences with bootstrap confidence scores, which is based on Bayesian posterior probability that quantitatively weigh each database hit sequence according to its similarity to the query sequence - the more similar database hit sequence to the query, the more its contribution to the taxonomic assignment of the query. 
 
-We implemented the above algorithm as both a python3 package at https://github.com/qunfengdong/BLCA and a simple python script at https://github.com/qunfengdong/BLCA_commandline.
+We implemented the above algorithm as both a python3 module at https://github.com/qunfengdong/BLCA_module and a simple python script at https://github.com/qunfengdong/BLCA_script.
 
-Depends on your preference, you could either download the python3 package, or the python scripts at current page.
+Depends on your preference, you could either download the python3 module, or the python scripts at current page.
 
-**The following instructions are only for the command line version of BLCA.**
+**The following instructions are only for the script version of BLCA.**
 
 ## Prerequisities
 * Python 2.7
@@ -19,7 +19,7 @@ Depends on your preference, you could either download the python3 package, or th
 Checkout the source code: https://github.com/qunfengdong/BLCA_commandline. To obtain the scripts and example fasta files, do the following:
 
 ```shell
-$ git clone https://github.com/qunfengdong/BLCA_commandline.git
+$ git clone https://github.com/qunfengdong/BLCA_script.git
 
 ```
 
