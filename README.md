@@ -31,7 +31,11 @@ We do not include a pre-compiled database with this release, so the first step i
 
 ## Getting started
 
-* Compile and subsetting the 16S Microbial database, and setup the environmental variable BLASTDB.
+* Compile and subsetting the 16S Microbial database, and setup the environmental variable BLASTDB. Please run:
+```
+python 1.subset_db_tax.py
+```
+More options available:
 ```
 $ python 1.subset_db_tax.py -h
 
@@ -61,7 +65,11 @@ export BLASTDB=/location/of/taxdb.bti/and/taxdb.btd/
 
 Normally, it should be located in the ./db/ directory.
 
-* Run your analysis with the compiled database.
+* Run your analysis with the compiled database. Please run:
+```
+python 2.blca.py -i test.fasta -r /location/to/your/database/16SMicrobial.taxID.taxonomy
+```
+More options are the following:
 ```
 $ python 2.blca.py -h
 
@@ -103,9 +111,9 @@ Arguments:
 
 ### Example output file:
 ```
-Read1   superkingdom:Bacteria;100.0;phylum:Proteobacteria;100.0;class:Gammaproteobacteria;100.0;order:Enterobacterales;100.0;family:Enterobacteriaceae;100.0;genus:Lelliottia;100.0;species:Lelliottia nimipressuralis;100.0;strain:Lelliottia nimipressuralis;100.0;
-Read2  superkingdom:Bacteria;100.0;phylum:Bacteroidetes;100.0;class:Cytophagia;100.0;order:Cytophagales;100.0;family:Cytophagaceae;100.0;genus:Runella;100.0;species:Runella slithyformis;100.0;strain:Runella slithyformis DSM 19594;97.5;
-Read3   superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacteria;100.0;order:Streptomycetales;100.0;family:Streptomycetaceae;100.0;genus:Streptomyces;100.0;species:Streptomyces echinatus;100.0;strain:Streptomyces echinatus;50.0;
+Read1      superkingdom:Bacteria;100.0;phylum:Proteobacteria;100.0;class:Gammaproteobacteria;100.0;order:Enterobacterales;100.0;family:Enterobacteriaceae;100.0;genus:Lelliottia;100.0;species:Lelliottia nimipressuralis;100.0;strain:Lelliottia nimipressuralis;100.0;
+Read2     superkingdom:Bacteria;100.0;phylum:Bacteroidetes;100.0;class:Cytophagia;100.0;order:Cytophagales;100.0;family:Cytophagaceae;100.0;genus:Runella;100.0;species:Runella slithyformis;100.0;strain:Runella slithyformis DSM 19594;97.5;
+Read3      superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacteria;100.0;order:Streptomycetales;100.0;family:Streptomycetaceae;100.0;genus:Streptomyces;100.0;species:Streptomyces echinatus;100.0;strain:Streptomyces echinatus;50.0;
 ```
 
 ## Version
@@ -118,7 +126,6 @@ An alternative public release
 * Huaiying Lin, program coding and testing
 * Kashi Revanna, program coding and package development
 
-
 ## License
 GNU
 
@@ -126,5 +133,3 @@ GNU
 * BLAST program: Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421.
 * MUSCLE: Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput.Nucleic Acids Res. 32(5):1792-1797. doi:10.1093/nar/gkh340
 * Biopython: Cock PA, Antao T, Chang JT, Bradman BA, Cox CJ, Dalke A, Friedberg I, Hamelryck T, Kauff F, Wilczynski B and de Hoon MJL (2009) Biopython: freely available Python tools for computational molecular biology and bioinformatics. Bioinformatics, 25, 1422-1423
-
-
