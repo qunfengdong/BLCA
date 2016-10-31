@@ -66,7 +66,7 @@ Normally, it should be located in the ./db/ directory.
 
 * Run your analysis with the compiled database. Please run:
 ```
-python 2.blca.py -i test.fasta -r /location/to/your/database/16SMicrobial.taxID.taxonomy
+$ python 2.blca.py -i test.fasta -r /location/to/your/database/16SMicrobial.taxID.taxonomy
 ```
 More options are the following:
 ```
