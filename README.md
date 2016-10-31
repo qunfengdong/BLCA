@@ -20,7 +20,6 @@ Checkout the source code: https://github.com/qunfengdong/BLCA_script. To obtain 
 
 ```shell
 $ git clone https://github.com/qunfengdong/BLCA_script.git
-
 ```
 
 After the github repository is cloned, you will find a folder named BLCA_script. All the scripts and example data files will be included in it.
@@ -33,7 +32,7 @@ We do not include a pre-compiled database with this release, so the first step i
 
 * Compile and subsetting the 16S Microbial database, and setup the environmental variable BLASTDB. Please run:
 ```
-python 1.subset_db_tax.py
+$ python 1.subset_db_tax.py
 ```
 More options available:
 ```
