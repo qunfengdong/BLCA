@@ -16,14 +16,14 @@ Depends on your preference, you could either download the python3 module, or the
 * MUSCLE (http://www.drive5.com/muscle/downloads.htm)
 
 ## Install
-Checkout the source code: https://github.com/qunfengdong/BLCA_commandline. To obtain the scripts and example fasta files, do the following:
+Checkout the source code: https://github.com/qunfengdong/BLCA_script. To obtain the scripts and example fasta files, do the following:
 
 ```shell
 $ git clone https://github.com/qunfengdong/BLCA_script.git
 
 ```
 
-After the github repository is cloned, you will find a folder named BLCA_commandline. All the scripts and example data files will be included in it.
+After the github repository is cloned, you will find a folder named BLCA_script. All the scripts and example data files will be included in it.
 
 ## Quick start
 
