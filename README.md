@@ -57,8 +57,8 @@ During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, 
 
 ```
 export BLASTDB=/location/of/taxdb.bti/and/taxdb.btd/
-
 ```
+
 Normally, it should be located in the ./db/ directory.
 
 * Run your analysis with the compiled database.
@@ -74,7 +74,7 @@ $ python 2.blca.py -h
 
 Usage: python 2.blca.py -i <fasta file> [option]
 
- 
+
 Arguments:
  - Required:
 	-i		Input fasta file.
