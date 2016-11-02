@@ -106,7 +106,7 @@ Arguments:
 
 ## Output
 * A text file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species, strain).
-* If no taxonomy annotation is available, it is listed as 'NA'
+* If no taxonomy annotation is available, it is listed as 'Not Available'
 
 ### Example output file:
 ```
