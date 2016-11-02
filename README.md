@@ -25,15 +25,15 @@ Checkout the source code: https://github.com/qunfengdong/BLCA_script. To obtain 
 $ git clone https://github.com/qunfengdong/BLCA_script.git
 ```
 
-After the github repository is cloned, you will find a folder named BLCA_script. All the scripts and example data files will be included in it.
+After the github repository is cloned, you will find a folder named BLCA_script. All the scripts and example data files will be included in it. **It is highly recommended to run your own analysis inside this directory (BLCA_script), meaning you should have your fasta files moved to here, so you don't have to change the default database directory.**
 
 ## Quick start
 
-We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_tax.py_. After the database is built and stored on your local machine, you will supply the loction of the taxonomy output file (16SMicrobial.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca.py_, then you will get a blca output as test.fasta.blca.out.
+We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_tax.py_. After the database is built and stored on your local machine, you will supply the loction of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca.py_, then you will get a blca output as test.fasta.blca.out.
 
 ## Getting started
 
-* Compile and subsetting the 16S Microbial database, and setup the environmental variable BLASTDB. Please run:
+* To compile, subset the 16S Microbial database, and setup the environmental variable BLASTDB. Please run:
 ```
 $ python 1.subset_db_tax.py
 ```
@@ -89,7 +89,7 @@ Usage: python 2.blca.py -i <fasta file> [option]
 Arguments:
  - Required:
 	-i		Input fasta file.
- - Taxonomy Profiling Options [filitering of hits]:
+ - Taxonomy Profiling Options [filtering of hits]:
 	-n		Number of times to bootstrap. Default: 100
 	-t		Extra number of nucleotides to include at the beginning and end of the hits. Default: 10
 	-d		Proportion of hits to include from top hit. Default: 0.1 [0-1]
