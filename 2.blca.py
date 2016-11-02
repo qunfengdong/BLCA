@@ -32,7 +32,7 @@ import os
 '''
 
 def usage():
-	print "\n<< Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your PATH:\n\t1.muscle (http://www.drive5.com/muscle/downloads.htm)\n\t2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)\n\t3.Biopython should be installed locally.\n"
+	print "\n<< Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your PATH:\n\t1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.\n\t2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)\n\t3.Biopython should be installed locally.\n"
 	print 'Usage: python '+sys.argv[0]+' -i <fasta file> [option]\n'
 	print " \nArguments:\n - Required:"
 	print "\t-i\t\tInput fasta file.\n - Taxonomy Profiling Options [filitering of hits]:"
