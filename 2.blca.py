@@ -35,7 +35,7 @@ def usage():
 	print "\n<< Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your PATH:\n\t1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.\n\t2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)\n\t3.Biopython should be installed locally.\n"
 	print 'Usage: python '+sys.argv[0]+' -i <fasta file> [option]\n'
 	print " \nArguments:\n - Required:"
-	print "\t-i\t\tInput fasta file.\n - Taxonomy Profiling Options [filitering of hits]:"
+	print "\t-i\t\tInput fasta file.\n - Taxonomy Profiling Options [filtering of hits]:"
 	print "\t-n\t\tNumber of times to bootstrap. Default: 100"
 	print "\t-t\t\tExtra number of nucleotides to include at the beginning and end of the hits. Default: 10"
 	print "\t-d\t\tProportion of hits to include from top hit. Default: 0.1 [0-1]"
@@ -76,21 +76,21 @@ for o,a in opts:
 	elif o == "-c":
                 cvrset=a
 	elif o == "-l":
-                longout=True
-        elif o == "-d":
-                topper=float(a)
-        elif o == "-e":
-                eset=float(a)
-        elif o == "-f":
-                mismatch=float(a)
-        elif o == "-g":
-                ngap=float(a)
-        elif o == "-q":
-                db=a
-        elif o == "-m":
-                match=float(a)
-        elif o == "-b":
-                iset=float(a)
+		longout=True
+	elif o == "-d":
+		topper=float(a)
+	elif o == "-e":
+		eset=float(a)
+	elif o == "-f":
+		mismatch=float(a)
+	elif o == "-g":
+		ngap=float(a)
+	elif o == "-q":
+		db=a
+	elif o == "-m":
+		match=float(a)
+	elif o == "-b":
+		iset=float(a)
 	elif o== "-o":
 		outfile=a
 	elif o== "-r":
@@ -104,39 +104,39 @@ for o,a in opts:
 		assert False, 'unhandle option'
 
 def check_taxdb():
-    ''' Check whether BLASTDB environmental variable has been setup'''
-    if 'BLASTDB' not in os.environ.keys():
-        print "ERROR: taxdb location has not been set up as the environmental variable BLASTDB. Please set up as \n\texport BLASTDB=/location/of/taxdb.bti/and/taxdb.btd/"
-        sys.exit(1)
+	''' Check whether BLASTDB environmental variable has been setup'''
+	if 'BLASTDB' not in os.environ.keys():
+		print "ERROR: taxdb location has not been set up as the environmental variable BLASTDB. Please set up as \n\texport BLASTDB=/location/of/taxdb.bti/and/taxdb.btd/"
+		sys.exit(1)
 
 def check_program(prgname):
-    '''Check whether a program has been installed and put in the PATH'''
-    import os
-    path=os.popen("which "+prgname).read().rstrip()
-    if len(path) > 0 and os.path.exists(path):
-        print prgname+" is located in your PATH!"
-    else:
-        print "ERROR: "+prgname+" is NOT in your PATH, please set up "+prgname+"!"
-        sys.exit(1)
-       
+	'''Check whether a program has been installed and put in the PATH'''
+	import os
+	path=os.popen("which "+prgname).read().rstrip()
+	if len(path) > 0 and os.path.exists(path):
+		print prgname+" is located in your PATH!"
+	else:
+		print "ERROR: "+prgname+" is NOT in your PATH, please set up "+prgname+"!"
+		sys.exit(1)
+
 def run_blastn(fsa):
-    '''Running blastn with customized output format'''
-    check_program("blastn")
-    import subprocess
+	'''Running blastn with customized output format'''
+	check_program("blastn")
+	import subprocess
 	print ">> Running blast!!"
 	subprocess.call(['blastn','-query',fsa,'-evalue',str(eset),'-dust','no','-soft_masking','false','-db',db,'-num_threads','4','-outfmt','6 std score sstrand slen sseq staxids sscinames qlen','-out',fsa+'.blastn'])
 	print ">> Blastn Finished!!"
 
 def get_dic_from_aln(aln):
-    '''Read in alignment and convert it into a dictionary'''
+	'''Read in alignment and convert it into a dictionary'''
 	alignment=AlignIO.read(aln,"clustal")
 	alndic={}
-        for r in alignment:
-                alndic[r.id]=list(r.seq)
+	for r in alignment:
+		alndic[r.id]=list(r.seq)
 	return alndic
 
 def pairwise_score(alndic,query,match,mismatch,ngap):
-    '''Calculate pairwise alignment score given a query'''
+	'''Calculate pairwise alignment score given a query'''
 	nt=["A","C","T","G","g","a","c","t"]
 	hitscore={}
 	for k,v in alndic.items():
@@ -157,7 +157,7 @@ def pairwise_score(alndic,query,match,mismatch,ngap):
 	return hitscore
 
 def random_aln_score(alndic,query,match,mismatch,ngap):
-    '''Randomize the alignment, and calculate the score'''
+	'''Randomize the alignment, and calculate the score'''
 	nt=["A","C","T","G","g","a","c","t"]
 	idx=[]
 	for i in range(len(alndic.values()[0])):
@@ -178,7 +178,7 @@ def random_aln_score(alndic,query,match,mismatch,ngap):
         return hitscore				
 
 def get_gap_pos(query,alndic):
-    '''Get the gap position in the alignment'''
+	'''Get the gap position in the alignment'''
 	for i in range(len(alndic[query])):
 		if alndic[query][i] != "-":
 			start=i
@@ -190,7 +190,7 @@ def get_gap_pos(query,alndic):
 	return start,end
 
 def cut_gap(alndic,start,end):
-    '''Given a start and end gap position, truncate the alignmnet'''
+	'''Given a start and end gap position, truncate the alignmnet'''
 	trunc_alndic={}
 	for k_truc,v_truc in alndic.items():
 		trunc_alndic[k_truc]=v_truc[start:end]
