@@ -104,16 +104,31 @@ for o,a in opts:
 		assert False, 'unhandle option'
 
 def check_taxdb():
+    ''' Check whether BLASTDB environmental variable has been setup'''
     if 'BLASTDB' not in os.environ.keys():
         print "ERROR: taxdb location has not been set up as the environmental variable BLASTDB. Please set up as \n\texport BLASTDB=/location/of/taxdb.bti/and/taxdb.btd/"
         sys.exit(1)
-        
+
+def check_program(prgname):
+    '''Check whether a program has been installed and put in the PATH'''
+    import os
+    path=os.popen("which "+prgname).read().rstrip()
+    if len(path) > 0 and os.path.exists(path):
+        print prgname+" is located in your PATH!"
+    else:
+        print "ERROR: "+prgname+" is NOT in your PATH, please set up "+prgname+"!"
+        sys.exit(1)
+       
 def run_blastn(fsa):
+    '''Running blastn with customized output format'''
+    check_program("blastn")
+    import subprocess
 	print ">> Running blast!!"
 	subprocess.call(['blastn','-query',fsa,'-evalue',str(eset),'-dust','no','-soft_masking','false','-db',db,'-num_threads','4','-outfmt','6 std score sstrand slen sseq staxids sscinames qlen','-out',fsa+'.blastn'])
 	print ">> Blastn Finished!!"
 
 def get_dic_from_aln(aln):
+    '''Read in alignment and convert it into a dictionary'''
 	alignment=AlignIO.read(aln,"clustal")
 	alndic={}
         for r in alignment:
@@ -121,6 +136,7 @@ def get_dic_from_aln(aln):
 	return alndic
 
 def pairwise_score(alndic,query,match,mismatch,ngap):
+    '''Calculate pairwise alignment score given a query'''
 	nt=["A","C","T","G","g","a","c","t"]
 	hitscore={}
 	for k,v in alndic.items():
@@ -141,6 +157,7 @@ def pairwise_score(alndic,query,match,mismatch,ngap):
 	return hitscore
 
 def random_aln_score(alndic,query,match,mismatch,ngap):
+    '''Randomize the alignment, and calculate the score'''
 	nt=["A","C","T","G","g","a","c","t"]
 	idx=[]
 	for i in range(len(alndic.values()[0])):
@@ -161,20 +178,22 @@ def random_aln_score(alndic,query,match,mismatch,ngap):
         return hitscore				
 
 def get_gap_pos(query,alndic):
+    '''Get the gap position in the alignment'''
 	for i in range(len(alndic[query])):
-		if alndic[k][i] != "-":
+		if alndic[query][i] != "-":
 			start=i
 			break
-	for i in range(len(alndic[k])-1,0,-1):
-		if alndic[k][i] != "-":
+	for i in range(len(alndic[query])-1,0,-1):
+		if alndic[query][i] != "-":
 			end=i
 			break
 	return start,end
 
 def cut_gap(alndic,start,end):
+    '''Given a start and end gap position, truncate the alignmnet'''
 	trunc_alndic={}
-	for k,v in alndic.items():
-		trunc_alndic[k]=v[start:end]
+	for k_truc,v_truc in alndic.items():
+		trunc_alndic[k_truc]=v_truc[start:end]
 	return trunc_alndic
 
 
@@ -186,6 +205,12 @@ def cut_gap(alndic,start,end):
 
 ## check taxdb
 check_taxdb()
+
+## check whether blastdbcmd is located in the path
+check_program("blastdbcmd")
+
+## check whether muscle is located in the path
+check_program("muscle")
 
 ## Run blastn and output fas.blastn output
 run_blastn(fsa)
@@ -355,8 +380,4 @@ for k,v in qtosdic.items():
 	relgi = [x for x in giinfo.keys() if max(pervote,key=pervote.get) in x][0]
 	outout.write("strain:"+giinfo[relgi][6]+";"+str(max(pervote.values()))+";\n")
 	outout.close()
-#os.system("rm *.hitdb.fsa")
-#os.system("rm *.dblist")
-#os.system("rm *.muscle")
-#outout.close()
 print ">> Taxonomy file generated!!"
