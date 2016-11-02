@@ -13,7 +13,7 @@ Depends on your preference, you could either download the python3 module, or the
 * Linux
 * Biopython
 
-# **The following programs should be in your PATH:**
+### **The following programs should be in your PATH:**
 
 * BLAST binary (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.3.0/)
 * MUSCLE (http://www.drive5.com/muscle/downloads.htm)
