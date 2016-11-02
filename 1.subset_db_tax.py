@@ -53,10 +53,9 @@ for o,a in opts:
                 assert False, 'unhandle option'
 
 def setup_tax_db(url):
-        os.system("wget -P ./db/ "+url)
-        os.system("tar zxvf ./db/taxdb.tar.gz -C db/")
-	print "taxdb downloaded!\n######################\n>> Please run the following before the next script:\nexport BLASTDB="+os.getcwd()+"/db/"+"\n##################"
-#       print ">> Taxonomy Database is set up successfully!"
+	os.system("wget -P ./db/ "+url)
+	os.system("tar zxvf ./db/taxdb.tar.gz -C db/")
+	print "taxdb downloaded!\n######################\n>> Please run the following before the next script:\nexport BLASTDB="+os.getcwd()+"/db/"+"\n######################"
 
 def lineage(tid,allnode,namesdic,nonexist):
 	levels=["superkingdom","phylum","class","order","family","genus","subspecies","species"]
@@ -106,13 +105,25 @@ def gi_taxid_nucl(fsa,gi_taxid_dmp):
                 outmap.write(k+"\t"+tagi[v]+"\n")
         outmap.close()
 
+def check_program(prgname):
+	'''Check whether a program has been installed and put in the PATH'''
+	import os
+	path=os.popen("which "+prgname).read().rstrip()
+	if len(path) > 0 and os.path.exists(path):
+		print prgname+" is located in your PATH!"
+	else:
+		print "ERROR: "+prgname+" is NOT in your PATH, please set up "+prgname+"!"
+		sys.exit(1)
+
 
 def get_db_taxid(url):
 	dblist=re.split(r'\.|\/+',url)[-3]
+	check_program("blastdbcmd")
 	os.system("wget -P db/ "+url)
 	os.system("tar zxvf db/"+dblist+".tar.gz -C db/")
 	os.system("blastdbcmd -entry all -outfmt %T -db db/"+dblist+" -out db/"+dblist+".taxID")
 	print ">> TaxIDs from "+dblist+" are extracted!!"
+
 
 #####################################################################
 ####	End of functions
@@ -147,15 +158,15 @@ while len(nolist) < nnolist:
 #	nodmp=open('subset.nodes.dmp')
 	print ">> 1 >> Open nodes.dmp file!"
 	nodmp=open(nodes)
-#	i=1	
+	i=1	
 #       print nolist
 	nnolist=len(nolist)
         for ln in nodmp:
                 lne=ln.rstrip()
                 line=re.split("\t\|\t|\t\|",lne)
 		i+=1
-#		if i%10000 == 0:
-#			print "Scanning nodes.dmp line:", i
+		if i%100000 == 0:
+			print "Scanning nodes.dmp line:", i
                 if line[0] in nolist:
                         allnode[line[0]]=line[1:3]
                         nolist.remove(line[0])
@@ -193,3 +204,4 @@ subtx.close()
 print ">> Taxonomy file generated!"
 
 setup_tax_db(taxdb)
+
