@@ -138,6 +138,10 @@ Read3      superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinob
 * Huaiying Lin, program coding and testing
 * Kashi Revanna, program coding and package development
 
+## Error report
+
+Please report any errors or bugs to [Eddi Lin](ying.eddi2008@gmail.com).
+
 ## License
 GNU
 
