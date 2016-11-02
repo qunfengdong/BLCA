@@ -12,6 +12,9 @@ Depends on your preference, you could either download the python3 module, or the
 * Python 2.7
 * Linux
 * Biopython
+
+** The following program should be in your PATH **
+
 * BLAST binary (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.3.0/)
 * MUSCLE (http://www.drive5.com/muscle/downloads.htm)
 
@@ -76,7 +79,7 @@ $ python 2.blca.py -h
 << Bayesian-based LCA taxonomic classification method >>
 
    Please make sure the following softwares are in your PATH:
-	1.muscle (http://www.drive5.com/muscle/downloads.htm)
+	1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
 	2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 	3.Biopython should be installed locally.
 
