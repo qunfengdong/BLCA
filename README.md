@@ -18,8 +18,12 @@ Depends on your preference, you could either download the python3 module, or the
 * BLAST binary (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.3.0/)
 * MUSCLE (http://www.drive5.com/muscle/downloads.htm)
 
+## Citation
+
+In press. Will update when accepted.
+
 ## Install
-Checkout the source code: https://github.com/qunfengdong/BLCA_script. To obtain the scripts and example fasta files, do the following:
+To check out the source code, go to https://github.com/qunfengdong/BLCA_script. To obtain the scripts and example fasta files, do the following:
 
 ```shell
 $ git clone https://github.com/qunfengdong/BLCA_script.git
@@ -120,8 +124,7 @@ Read3      superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinob
 ```
 
 ## Version
-* Version 1.2
-An alternative public release
+* Version 1.2 An alternative public release
 
 ## Authors
 * Dr. Xiang Gao, theoretical conception and algorithm development
