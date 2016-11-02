@@ -18,7 +18,7 @@ __status__ = "Production"
 
 '''
 
-Get a subset of lineage information from NCBI for 16S Microbial database.
+Get a subset of lineage information from NCBI 16S Microbial database.
 
 '''
 
