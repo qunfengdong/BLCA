@@ -37,7 +37,8 @@ We do not include a pre-compiled database with this release, so the first step i
 
 ## Getting started
 
-### To compile, subset the 16S Microbial database, and setup the environmental variable BLASTDB. Please run:
+### Step 1
+* To compile, subset the 16S Microbial database, and setup the environmental variable BLASTDB. Please run:
 ```
 $ python 1.subset_db_tax.py
 ```
@@ -72,7 +73,8 @@ export BLASTDB=/location/of/taxdb.bti/and/taxdb.btd/
 
 Normally, it should be located in the ./db/ directory.
 
-### Run your analysis with the compiled database. Please run:
+### Step 2 
+* Run your analysis with the compiled database. Please run:
 ```
 $ python 2.blca.py -i test.fasta
 ```
