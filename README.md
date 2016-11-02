@@ -140,7 +140,7 @@ Read3      superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinob
 
 ## Error report
 
-Please report any errors or bugs to [Eddi Lin](ying.eddi2008@gmail.com).
+Please report any errors or bugs to hlin2@luc.edu.
 
 ## License
 GNU
