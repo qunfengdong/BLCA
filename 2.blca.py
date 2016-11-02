@@ -27,7 +27,7 @@ import os
 # import argparse
 
 '''
-
+BLCA Core annotation tool
 
 '''
 
