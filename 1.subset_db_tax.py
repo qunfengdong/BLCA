@@ -27,7 +27,7 @@ def usage():
         print "   This is the utility script to format 16S Microbial Database from NCBI before running the BLCA taxonomy profiling. This could be used for other subsets of NCBI formatted database for blast too.\n"
 	print 'Usage: python '+sys.argv[0]+'\n'
         print "Arguments:\n - Optional:"
-        print "\t-d\t\tThe database link that you want to download from and format. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/16SMicrobial.tar.gz.\n\t-t\t\tThe taxonomy database link from NCBI. Default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip.\n\t-u\t\tThe taxdb from NCBI. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz - Other:"
+        print "\t-d\t\tThe database link that you want to download from and format. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/16SMicrobial.tar.gz.\n\t-t\t\tThe taxonomy database link from NCBI. Default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip.\n\t-u\t\tThe taxdb from NCBI. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz \n - Other:"
 	print "\t-h\t\tShow program usage and quit"	
 
 db='ftp://ftp.ncbi.nlm.nih.gov/blast/db/16SMicrobial.tar.gz'
