@@ -114,7 +114,7 @@ Arguments:
 
 ## Output
 * A text file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species).
-* If no taxonomy annotation is available, it is listed as 'Not Available'
+* If no taxonomy annotation is available, it is listed as 'Not Available', therefore the confidence score after that taxonomy annotation is defaulted to 100, and this number should not be used.
 
 ### Example output file:
 ```
