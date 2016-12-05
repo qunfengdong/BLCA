@@ -38,7 +38,7 @@ We do not include a pre-compiled database with this release, so the first step i
 ## Getting started
 
 ### Step 1
-* To compile, subset the 16S Microbial database, and setup the environmental variable BLASTDB. Please run:
+* To compile, subset the 16S Microbial database. Please run:
 ```
 $ python 1.subset_db_acc.py
 ```
@@ -65,7 +65,7 @@ Arguments:
  - Other:
 	-h		Show program usage and quit
 ```
-During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, taxdmp.zip, and taxdb.tar.gz will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.taxID.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
+During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, and taxdmp.zip will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.ACC.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
 
 ### Step 2 
 * Run your analysis with the compiled database. Please run:
