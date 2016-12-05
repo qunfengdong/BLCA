@@ -67,6 +67,36 @@ Arguments:
 ```
 During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, and taxdmp.zip will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.ACC.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
 
+### Alternative Step 1
+* To format Greengenes database, first you have to download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA_script folder: Please run:
+```
+$ python 1.subset_db_gg.py
+```
+This script will unzip the downloaded files and create a new folder called "gg" to store all needed information.
+
+More options available:
+```
+$ python 1.subset_db_gg.py -h
+
+<< Bayesian-based LCA taxonomic classification method >>
+
+   Please make sure the following softwares are in your PATH:
+	1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
+	2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+	3.Biopython is installed locally.
+
+   This is the utility script to format Greengene Database before running the BLCA taxonomy profiling.
+
+Usage: python 1.subset_db_gg.py
+
+Arguments:
+ - Optional:
+	-d		The database file that you want to format. Default: gg_13_5.fasta.gz.
+	-t		The taxonomy database link from Greengenes. Default: gg_13_5_taxonomy.txt.gz. 
+ - Other:
+	-h		Show program usage and quit
+```
+
 ### Step 2 
 * Run your analysis with the compiled database. Please run:
 ```
@@ -76,6 +106,11 @@ If you are running your analysis somewhere else other than in the BLCA_script di
 ```
 $ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/16SMicrobial.ACC.taxonomy
 ```
+If you are using the Greengene database as your reference, please do the following:
+```
+$ python /location/to/2.blca_main.py -i test.fasta -r gg/gg_13_5_taxonomy.taxonomy -q gg/gg_13_5
+```
+
 More options are the following:
 ```
 $ python 2.blca_main.py -h
