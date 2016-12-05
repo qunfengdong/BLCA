@@ -74,11 +74,11 @@ $ python 2.blca_main.py -i test.fasta
 ```
 If you are running your analysis somewhere else other than in the BLCA_script directory, please do the following:
 ```
-$ python /location/to/2.blca.py -i test.fasta -r /location/to/your/database/16SMicrobial.ACC.taxonomy
+$ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/16SMicrobial.ACC.taxonomy
 ```
 More options are the following:
 ```
-$ python 2.blca.py -h
+$ python 2.blca_main.py -h
 
 << Bayesian-based LCA taxonomic classification method >>
 
@@ -87,7 +87,7 @@ $ python 2.blca.py -h
 	2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 	3.Biopython should be installed locally.
 
-Usage: python 2.blca.py -i <fasta file> [option]
+Usage: python 2.blca_main.py -i <fasta file> [option]
 
 
 Arguments:
@@ -101,7 +101,7 @@ Arguments:
 	-a		Minimum bitscore to include for blastn hits. Default: 100
 	-c		Minimum coverage to include. Default: 0.95 [0-1]
 	-b		Minimum identity score to include. Default: 95 [0-100]
-	-r		Reference Taxonomy file for the Database. Default: db/16SMicrobial.taxID.taxonomy
+	-r		Reference Taxonomy file for the Database. Default: db/16SMicrobial.ACC.taxonomy
 	-q		Refernece blast database. Default: db/16SMicrobial
 	-o		Output file name. Default: <fasta>.blca.out
  - Alignment Options:
@@ -113,14 +113,14 @@ Arguments:
 ```
 
 ## Output
-* A text file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species, strain).
+* A text file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species).
 * If no taxonomy annotation is available, it is listed as 'Not Available'
 
 ### Example output file:
 ```
-Read1      superkingdom:Bacteria;100.0;phylum:Proteobacteria;100.0;class:Gammaproteobacteria;100.0;order:Enterobacterales;100.0;family:Enterobacteriaceae;100.0;genus:Lelliottia;100.0;species:Lelliottia nimipressuralis;100.0;strain:Lelliottia nimipressuralis;100.0;
-Read2     superkingdom:Bacteria;100.0;phylum:Bacteroidetes;100.0;class:Cytophagia;100.0;order:Cytophagales;100.0;family:Cytophagaceae;100.0;genus:Runella;100.0;species:Runella slithyformis;100.0;strain:Runella slithyformis DSM 19594;97.5;
-Read3      superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacteria;100.0;order:Streptomycetales;100.0;family:Streptomycetaceae;100.0;genus:Streptomyces;100.0;species:Streptomyces echinatus;100.0;strain:Streptomyces echinatus;50.0;
+seq96	superkingdom:Bacteria;100.0;phylum:Bacteroidetes;100.0;class:Flavobacteriia;100.0;order:Flavobacteriales;100.0;family:Flavobacteriaceae;100.0;genus:Namhaeicola;100.0;subspecies:Not Available;100.0;species:Namhaeicola litoreus;100.0;
+seq94	superkingdom:Bacteria;100.0;phylum:Firmicutes;100.0;class:Clostridia;100.0;order:Clostridiales;100.0;family:Lachnospiraceae;100.0;genus:Lachnoclostridium;100.0;subspecies:Not Available;100.0;species:[Clostridium] symbiosum;100.0;
+seq93	superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacteria;100.0;order:Corynebacteriales;100.0;family:Nocardiaceae;100.0;genus:Rhodococcus;100.0;subspecies:Not Available;100.0;species:Rhodococcus zopfii;99.5;
 ```
 
 ## Version
