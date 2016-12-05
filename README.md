@@ -33,18 +33,18 @@ After the github repository is cloned, you will find a folder named BLCA_script.
 
 ## Quick start
 
-We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_tax.py_. After the database is built and stored on your local machine, you will supply the loction of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca.py_, then you will get a blca output as test.fasta.blca.out.
+We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_acc.py_. After the database is built and stored on your local machine, you will supply the loction of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca_main.py_, then you will get a blca output as test.fasta.blca.out.
 
 ## Getting started
 
 ### Step 1
 * To compile, subset the 16S Microbial database, and setup the environmental variable BLASTDB. Please run:
 ```
-$ python 1.subset_db_tax.py
+$ python 1.subset_db_acc.py
 ```
 More options available:
 ```
-$ python 1.subset_db_tax.py -h
+$ python 1.subset_db_acc.py -h
 
 << Bayesian-based LCA taxonomic classification method >>
 
@@ -55,7 +55,7 @@ $ python 1.subset_db_tax.py -h
 
    This is the utility script to format 16S Microbial Database from NCBI before running the BLCA taxonomy profiling. This could be used for other subsets of NCBI formatted database for blast too.
 
-Usage: python 1.subset_db_tax.py
+Usage: python 1.subset_db_acc.py
 
 Arguments:
  - Optional:
@@ -65,22 +65,16 @@ Arguments:
  - Other:
 	-h		Show program usage and quit
 ```
-During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, taxdmp.zip, and taxdb.tar.gz will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.taxID.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca.py as the database. And an environmental variable called BLASTDB has to be set up manually. There will be instruction at the end of this script to let you know what shell command you should run to set it up. **If you login to a new shell, this environmental variable has to be set up again before running the analysis.**
-
-```
-export BLASTDB=/location/of/taxdb.bti/and/taxdb.btd/
-```
-
-Normally, it should be located in the ./db/ directory.
+During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, taxdmp.zip, and taxdb.tar.gz will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.taxID.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
 
 ### Step 2 
 * Run your analysis with the compiled database. Please run:
 ```
-$ python 2.blca.py -i test.fasta
+$ python 2.blca_main.py -i test.fasta
 ```
 If you are running your analysis somewhere else other than in the BLCA_script directory, please do the following:
 ```
-$ python /location/to/2.blca.py -i test.fasta -r /location/to/your/database/16SMicrobial.taxID.taxonomy
+$ python /location/to/2.blca.py -i test.fasta -r /location/to/your/database/16SMicrobial.ACC.taxonomy
 ```
 More options are the following:
 ```
