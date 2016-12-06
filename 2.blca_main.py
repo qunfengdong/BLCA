@@ -339,15 +339,14 @@ for k1,v1 in qtosdic.items():
 	outout=open(outfile,'aw')
 	for k5,v5 in orgscore.items():
 		shortk5=k5.split(".")[0]
-		k2tax=acc2tax[shortk5]
-#		k2=[x for x in giinfo.keys() if k5 in x][0]
-#		k2tax=tidtax[gi2taxid[k2.split("|")[1]]]
-		mistx=list(set(levels)-set(k2tax.keys()))
-		for mis in mistx:
-			k2tax[mis]="Not Available"		
-		if not pervote.has_key(k5):
-			pervote.update({k5:0})
-		hitstax[k5]=[k2tax,pervote[k5],orgscore[k5]]
+		if acc2tax.has_key(shortk5):
+			k2tax=acc2tax[shortk5]
+			mistx=list(set(levels)-set(k2tax.keys()))
+			for mis in mistx:
+				k2tax[mis]="Not Available"
+			if not pervote.has_key(k5):
+				pervote.update({k5:0})
+			hitstax[k5]=[k2tax,pervote[k5],orgscore[k5]]
 	voten=[y[1] for y in hitstax.values()]
 	prbn=[z[2] for z in hitstax.values()]
 	outout.write(k1+"\t")
