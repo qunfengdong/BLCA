@@ -9,11 +9,11 @@ __maintainer__ = "Huaiying Lin"
 __email__ = "ying.eddi2008@gmail.com"
 __status__ = "Production"
 
-
 import sys
 import os
 import math
 
+## test whether Biopython is installed ##
 try:
 	from Bio import AlignIO
 except ImportError:
