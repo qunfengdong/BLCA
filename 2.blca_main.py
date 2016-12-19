@@ -68,7 +68,7 @@ mismatch=-2.5       # mismatch penalty
 tax='./db/16SMicrobial.ACC.taxonomy'
 db='./db/16SMicrobial'
 
-opts, args=getopt.getopt(sys.argv[1:],"b:c:d:e:f:g:i:lm:n:o:r:q:t:h",['Minimum Identity','Minimum Coverage','Top Proportion','Minimum evale','Alignment Mismatch Penalty','Alignment Gap Penalty','Input File','Long Output','Alignment Match Score','Number of Bootstrap to Run','Output File','Taxonomy File of Database','Reference Blastn Database','Number of nt Length of Sequence','help'])
+opts, args=getopt.getopt(sys.argv[1:],"a:b:c:d:e:f:g:i:lm:n:o:r:q:t:h",['Minimum bitscore','Minimum Identity','Minimum Coverage','Top Proportion','Minimum evale','Alignment Mismatch Penalty','Alignment Gap Penalty','Input File','Long Output','Alignment Match Score','Number of Bootstrap to Run','Output File','Taxonomy File of Database','Reference Blastn Database','Number of nt Length of Sequence','help'])
 for o,a in opts:
 	if o == "-i":
 		fsa=a
@@ -285,84 +285,92 @@ for k in range(0,len(fsaln),2):
 #print "> 4 > Fasta file read in!!"
 
 
-levels=["superkingdom","phylum","class","order","family","genus","subspecies","species"]
-for k1,v1 in qtosdic.items():
-	os.system("rm -f "+k1+".dblist")
-	os.system("rm -f "+k1+".hitdb.fsa")
-	### Get all the hits list belong to the same query ###
-	msafsa=open(k1+".dblist",'aw')
-	for g in v1:
-		msafsa.write(g.split(":")[0]+" "+str(giinfo[g][0])+"-"+str(giinfo[g][1])+" "+giinfo[g][2]+"\n")
-	msafsa.close()
-	os.system("blastdbcmd -db "+db+" -entry_batch "+k1+".dblist -outfmt %f > "+k1+".hitdb.fsa")
+levels=["superkingdom","phylum","class","order","family","genus","species"]
+# for k1,v1 in qtosdic.items():
+for seqn in fsadic.keys():
+	k1=seqn
+	if qtosdic.has_key(k1):
+		v1=qtosdic[k1]
+		os.system("rm -f "+k1+".dblist")
+		os.system("rm -f "+k1+".hitdb.fsa")
+	### Get all the hits list belong to the same query ##
+		msafsa=open(k1+".dblist",'aw')
+		for g in v1:
+			msafsa.write(g.split(":")[0]+" "+str(giinfo[g][0])+"-"+str(giinfo[g][1])+" "+giinfo[g][2]+"\n")
+		msafsa.close()
+		os.system("blastdbcmd -db "+db+" -entry_batch "+k1+".dblist -outfmt %f > "+k1+".hitdb.fsa")
 	### Add query fasta sequence to extracted hit fasta ###
-	fifsa=open(k1+".hitdb.fsa",'aw')
-	fifsa.write(">"+k1+"\n"+fsadic[k1])
-	fifsa.close()
-	os.system("rm "+k1+".dblist")
+		fifsa=open(k1+".hitdb.fsa",'aw')
+		fifsa.write(">"+k1+"\n"+fsadic[k1])
+		fifsa.close()
+	   	os.system("rm "+k1+".dblist")
 	### Run muscle ###
-	os.system("muscle -quiet -clw -in "+k1+".hitdb.fsa -out "+k1+".muscle")
-	alndic=get_dic_from_aln(k1+".muscle")
-	os.system("rm "+k1+".hitdb.fsa")
-	os.system("rm "+k1+".muscle")
-    	### get gap position and truncate the alignment###
-	start,end=get_gap_pos(k1,alndic)
-	trunc_alndic=cut_gap(alndic,start,end)
-	orgscore=pairwise_score(trunc_alndic,k1,match,mismatch,ngap)
+	   	os.system("muscle -quiet -clw -in "+k1+".hitdb.fsa -out "+k1+".muscle")
+	   	alndic=get_dic_from_aln(k1+".muscle")
+	   	os.system("rm "+k1+".hitdb.fsa")
+	   	os.system("rm "+k1+".muscle")
+    ### get gap position and truncate the alignment###
+	   	start,end=get_gap_pos(k1,alndic)
+	   	trunc_alndic=cut_gap(alndic,start,end)
+	   	orgscore=pairwise_score(trunc_alndic,k1,match,mismatch,ngap)
 	### start bootstrap ###
-	perdict={}	# record alignmet score for each iteration
-	pervote={}	# record vote after nper bootstrap
+	   	perdict={}	# record alignmet score for each iteration
+	   	pervote={}	# record vote after nper bootstrap
 	### If any equal score, average the vote ###
-	for j in range(nper):
-		tmpdic=random_aln_score(trunc_alndic,k1,match,mismatch,ngap)
-		perdict[j]=tmpdic
-		mx=max(tmpdic.values())
-		mxk=[k3 for k3,v3 in tmpdic.items() if v3 == mx]
-		if len(mxk)==1:
-			if pervote.has_key(max(tmpdic,key=tmpdic.get)):
-				pervote[max(tmpdic,key=tmpdic.get)]+=float(1)
-			else:
-				pervote[max(tmpdic,key=tmpdic.get)]=float(1)
-		else:
-			por=float(1)/len(mxk)
-			for h in mxk:
-				if pervote.has_key(h):
-                                	pervote[h]+=por
-                        	else:
-                                	pervote[h]=por
+	   	for j in range(nper):
+			tmpdic=random_aln_score(trunc_alndic,k1,match,mismatch,ngap)
+		  	perdict[j]=tmpdic
+		  	mx=max(tmpdic.values())
+		  	mxk=[k3 for k3,v3 in tmpdic.items() if v3 == mx]
+		  	if len(mxk)==1:
+			 	if pervote.has_key(max(tmpdic,key=tmpdic.get)):
+				    	pervote[max(tmpdic,key=tmpdic.get)]+=float(1)
+			 	else:
+				   	pervote[max(tmpdic,key=tmpdic.get)]=float(1)
+		  	else:
+			 	por=float(1)/len(mxk)
+			 	for h in mxk:
+				    	if pervote.has_key(h):
+                                	   	pervote[h]+=por
+                        	   	else:
+                                	   	pervote[h]=por
 	### normalize vote by total votes ###
-	ttlvote=sum(pervote.values())
-	for k4,v4 in pervote.items():
-		pervote[k4]=v4/ttlvote*100	
+	   	ttlvote=sum(pervote.values())
+	   	for k4,v4 in pervote.items():
+		  	pervote[k4]=v4/ttlvote*100	
 	### 
-	hitstax={}
-	outout=open(outfile,'aw')
-	for k5,v5 in orgscore.items():
-		shortk5=k5.split(".")[0]
-		if acc2tax.has_key(shortk5):
-			k2tax=acc2tax[shortk5]
-			mistx=list(set(levels)-set(k2tax.keys()))
-			for mis in mistx:
-				k2tax[mis]="Not Available"
-			if not pervote.has_key(k5):
-				pervote.update({k5:0})
-			hitstax[k5]=[k2tax,pervote[k5],orgscore[k5]]
-	voten=[y[1] for y in hitstax.values()]
-	prbn=[z[2] for z in hitstax.values()]
-	outout.write(k1+"\t")
-	for le in levels:
-		lex=[x[0][le] for x in hitstax.values()]
-		lexsum={}
-		prosum={}
-		for d in range(len(lex)):
-#			print voten[d]
-			if lexsum.has_key(lex[d]):
-				lexsum[lex[d]]+=voten[d]
-				prosum[lex[d]]+=prbn[d]
-			else:
-				lexsum[lex[d]]=voten[d]
-				prosum[lex[d]]=prbn[d]
-		outout.write(le+":"+max(lexsum,key=lexsum.get)+";"+str(max(lexsum.values()))+";")
-	outout.write("\n")
-	outout.close()
+	   	hitstax={}
+	   	outout=open(outfile,'aw')
+	   	for k5,v5 in orgscore.items():
+		  	shortk5=k5.split(".")[0]
+		  	if acc2tax.has_key(shortk5):
+			 	k2tax=acc2tax[shortk5]
+			 	mistx=list(set(levels)-set(k2tax.keys()))
+			 	for mis in mistx:
+				    	k2tax[mis]="Not Available"
+			 	if not pervote.has_key(k5):
+				    	pervote.update({k5:0})
+			 	hitstax[k5]=[k2tax,pervote[k5],orgscore[k5]]
+	   	voten=[y[1] for y in hitstax.values()]
+	   	prbn=[z[2] for z in hitstax.values()]
+	   	outout.write(k1+"\t")
+	   	for le in levels:
+		  	lex=[x[0][le] for x in hitstax.values()]
+		  	lexsum={}
+		  	prosum={}
+		  	for d in range(len(lex)):
+#			    	print voten[d]
+			 	if lexsum.has_key(lex[d]):
+				    	lexsum[lex[d]]+=voten[d]
+				    	prosum[lex[d]]+=prbn[d]
+			 	else:
+				    	lexsum[lex[d]]=voten[d]
+				    	prosum[lex[d]]=prbn[d]
+		  	outout.write(le+":"+max(lexsum,key=lexsum.get)+";"+str(max(lexsum.values()))+";")
+	   	outout.write("\n")
+	else:
+		outout.write(k1+"\tUnclassified\n")
+
+outout.close()
 print ">> Taxonomy file generated!!"
+
