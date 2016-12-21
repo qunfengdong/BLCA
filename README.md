@@ -33,7 +33,7 @@ After the github repository is cloned, you will find a folder named BLCA_script.
 
 ## Quick start
 
-We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_acc.py_. After the database is built and stored on your local machine, you will supply the loction of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca_main.py_, then you will get a blca output as test.fasta.blca.out.
+We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_acc.py_ (or 1.subset_db_gg.py). After the database is built and stored on your local machine, you will supply the loction of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca_main.py_, then you will get a blca output as test.fasta.blca.out.
 
 ## Getting started
 
@@ -68,7 +68,7 @@ Arguments:
 During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, and taxdmp.zip will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.ACC.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
 
 ### Alternative Step 1
-* To format Greengenes database, first you have to download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA_script folder: Please run:
+* To format Greengenes database, first you have to download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA_script folder, please run:
 ```
 $ python 1.subset_db_gg.py
 ```
@@ -96,6 +96,8 @@ Arguments:
  - Other:
 	-h		Show program usage and quit
 ```
+### Split input fasta (Optional)
+* If you have a big fasta file (more than 10,000 reads), and you want to run BLCA in "parallel", you can use this python package (https://pypi.python.org/pypi/pyfasta/#command-line-interface) to split fasta sequences into multiple parts, then run BLCA on each individual part.
 
 ### Step 2 
 * Run your analysis with the compiled database. Please run:
@@ -149,13 +151,13 @@ Arguments:
 
 ## Output
 * A text file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species).
-* If no taxonomy annotation is available, it is listed as 'Not Available', therefore the confidence score after that taxonomy annotation is defaulted to 100, and this number should not be used.
+* Any reads that do not have a classification will be recorded as "unclassified".
 
 ### Example output file:
 ```
-seq96	superkingdom:Bacteria;100.0;phylum:Bacteroidetes;100.0;class:Flavobacteriia;100.0;order:Flavobacteriales;100.0;family:Flavobacteriaceae;100.0;genus:Namhaeicola;100.0;subspecies:Not Available;100.0;species:Namhaeicola litoreus;100.0;
-seq94	superkingdom:Bacteria;100.0;phylum:Firmicutes;100.0;class:Clostridia;100.0;order:Clostridiales;100.0;family:Lachnospiraceae;100.0;genus:Lachnoclostridium;100.0;subspecies:Not Available;100.0;species:[Clostridium] symbiosum;100.0;
-seq93	superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacteria;100.0;order:Corynebacteriales;100.0;family:Nocardiaceae;100.0;genus:Rhodococcus;100.0;subspecies:Not Available;100.0;species:Rhodococcus zopfii;99.5;
+seq94	superkingdom:Bacteria;100.0;phylum:Firmicutes;100.0;class:Clostridia;100.0;order:Clostridiales;100.0;family:Lachnospiraceae;100.0;genus:Lachnoclostridium;100.0;species:[Clostridium] symbiosum;100.0;
+seq93	superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacteria;100.0;order:Corynebacteriales;100.0;family:Nocardiaceae;100.0;genus:Rhodococcus;100.0;species:Rhodococcus zopfii;99.5;
+seq96	Unclassified
 ```
 
 ## Version
