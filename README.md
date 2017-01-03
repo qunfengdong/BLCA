@@ -2,11 +2,7 @@ Bayesian-based LCA taxonomic classification method
 --------------------------------------------------
 Bayesian LCA-based Taxonomic Classification Method (BLCA) is a Bayesian-based method that provides a solid probabilistic basis for evaluating the taxonomic assignments for the query sequences with bootstrap confidence scores, which is based on Bayesian posterior probability that quantitatively weigh each database hit sequence according to its similarity to the query sequence - the more similar database hit sequence to the query, the more its contribution to the taxonomic assignment of the query. 
 
-We implemented the above algorithm as both a python3 module at https://github.com/qunfengdong/BLCA_module and a simple python script at https://github.com/qunfengdong/BLCA_script.
-
-Depends on your preference, you could either download the python3 module, or the python scripts at current page.
-
-**The following instructions are only for the script version of BLCA.**
+We implemented the above algorithm as a simple python script here.
 
 ## Prerequisities
 * Python 2.7
@@ -23,13 +19,13 @@ Depends on your preference, you could either download the python3 module, or the
 In press. Will update when accepted.
 
 ## Install
-To check out the source code, go to https://github.com/qunfengdong/BLCA_script. To obtain the scripts and example fasta files, do the following:
+To check out the source code, go to https://github.com/qunfengdong/BLCA. To obtain the scripts and example fasta files, do the following:
 
 ```shell
-$ git clone https://github.com/qunfengdong/BLCA_script.git
+$ git clone https://github.com/qunfengdong/BLCA.git
 ```
 
-After the github repository is cloned, you will find a folder named BLCA_script. All the scripts and example data files will be included in it. **It is highly recommended to run your own analysis inside this directory (BLCA_script), meaning you should have your fasta files moved to here, so you don't have to change the default database directory.**
+After the github repository is cloned, you will find a folder named BLCA. All the scripts and example data files will be included in it. **It is highly recommended to run your own analysis inside this directory (BLCA), meaning you should have your fasta files moved to here, so you don't have to change the default database directory.**
 
 ## Quick start
 
@@ -68,7 +64,7 @@ Arguments:
 During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, and taxdmp.zip will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.ACC.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
 
 ### Alternative Step 1
-* To format Greengenes database, first you have to download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA_script folder, please run:
+* To format Greengenes database, first you have to download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA folder, please run:
 ```
 $ python 1.subset_db_gg.py
 ```
@@ -104,7 +100,7 @@ Arguments:
 ```
 $ python 2.blca_main.py -i test.fasta
 ```
-If you are running your analysis somewhere else other than in the BLCA_script directory, please do the following:
+If you are running your analysis somewhere else other than in the BLCA directory, please do the following:
 ```
 $ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/16SMicrobial.ACC.taxonomy
 ```
