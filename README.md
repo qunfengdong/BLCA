@@ -105,7 +105,7 @@ $ python 2.blca_main.py -i test.fasta
 ```
 If you are running your analysis somewhere else other than in the BLCA directory, please do the following:
 ```
-$ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/16SMicrobial.ACC.taxonomy
+$ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/16SMicrobial.ACC.taxonomy -q /location/to/your/database/16SMicrobial
 ```
 If you are using the Greengene database as your reference, please do the following:
 ```
