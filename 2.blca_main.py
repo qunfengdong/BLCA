@@ -4,16 +4,16 @@ __author__ = "Xiang Gao, Huaiying Lin, Qunfeng Dong"
 __copyright__ = "Copyright 2016, Bayesian-based LCA taxonomic classification"
 __credits__ = ["Xiang Gao", "Huaiying Lin","Qunfeng Dong"]
 __license__ = "GPL"
-__version__ = "0.8"
+__version__ = "2.1"
 __maintainer__ = "Huaiying Lin"
 __email__ = "ying.eddi2008@gmail.com"
 __status__ = "Production"
+
 
 import sys
 import os
 import math
 
-## test whether Biopython is installed ##
 try:
 	from Bio import AlignIO
 except ImportError:
@@ -36,30 +36,32 @@ def usage():
 	print " \nArguments:\n - Required:"
 	print "\t-i\t\tInput fasta file.\n - Taxonomy Profiling Options [filtering of hits]:"
 	print "\t-n\t\tNumber of times to bootstrap. Default: 100"
-	print "\t-t\t\tExtra number of nucleotides to include at the beginning and end of the hits. Default: 10"
+	print "\t-j\t\tMaximum number of subjects to include for each query reads. Default: 50"
 	print "\t-d\t\tProportion of hits to include from top hit. Default: 0.1 [0-1]"
 	print "\t-e\t\tMinimum evalue to include for blastn. Default: 0.1"
 	print "\t-a\t\tMinimum bitscore to include for blastn hits. Default: 100"
-	print "\t-c\t\tMinimum coverage to include. Default: 0.95 [0-1]"
-	print "\t-b\t\tMinimum identity score to include. Default: 95 [0-100]"
+	print "\t-c\t\tMinimum coverage to include. Default: 0.85 [0-1]"
+	print "\t-b\t\tMinimum identity score to include. Default: 90 [0-100]"
 	print "\t-r\t\tReference Taxonomy file for the Database. Default: db/16SMicrobial.ACC.taxonomy"
 	print "\t-q\t\tRefernece blast database. Default: db/16SMicrobial"
 	print "\t-o\t\tOutput file name. Default: <fasta>.blca.out\n - Alignment Options:"
 	print "\t-m\t\tAlignment match score. Default: 1"
 	print "\t-f\t\tAlignment mismatch penalty. Default: -2.5"
 	print "\t-g\t\tAlignment gap penalty. Default: -2\n - Other:"
+	print "\t-t\t\tExtra number of nucleotides to include at the beginning and end of the hits. Default: 10"
 	print "\t-h\t\tShow program usage and quit" 
 
 ####set up default parameters #######
 ### bootstrap times ###
 nper=100            # number of bootstrap to permute
 ### Filter hits per query ###
-iset=float(95.0)    # identify threshold
+iset=float(90.0)    # identify threshold
 eset=float(0.1)     # evalue threshold
 gap=10              # number of nucleotides to include at the beginning and end of the hits
 topper=float(0.1)   # top percentage to include hits
-cvrset=float(0.95)  # coverage to include
+cvrset=float(0.80)  # coverage to include
 bset=float(100)     # minimum bitscore to include
+nsub=50		    # maximum number of subjects to include
 ### Alignment options ###
 ngap=-2             # gap penalty
 match=1             # match score
@@ -68,17 +70,19 @@ mismatch=-2.5       # mismatch penalty
 tax='./db/16SMicrobial.ACC.taxonomy'
 db='./db/16SMicrobial'
 
-opts, args=getopt.getopt(sys.argv[1:],"a:b:c:d:e:f:g:i:lm:n:o:r:q:t:h",['Minimum bitscore','Minimum Identity','Minimum Coverage','Top Proportion','Minimum evale','Alignment Mismatch Penalty','Alignment Gap Penalty','Input File','Long Output','Alignment Match Score','Number of Bootstrap to Run','Output File','Taxonomy File of Database','Reference Blastn Database','Number of nt Length of Sequence','help'])
+opts, args=getopt.getopt(sys.argv[1:],"a:b:c:d:e:f:g:i:j:lm:n:o:r:q:t:h",['Minimum bitscore','Minimum Identity','Minimum Coverage','Top Proportion','Minimum evalue','Alignment Mismatch Penalty','Alignment Gap Penalty','Input File','Maximum Subjects','Long Output','Alignment Match Score','Number of Bootstrap to Run','Output File','Taxonomy File of Database','Reference Blastn Database','Number of nt Length of Sequence','help'])
 for o,a in opts:
 	if o == "-i":
 		fsa=a
 		outfile=fsa+".blca.out"
 	elif o == "-n":
 		nper=float(a)
+	elif o== "-j":
+		nsub=int(a)
 	elif o == "-t":
 		gap=float(a)
 	elif o == "-c":
-            cvrset=a
+		cvrset=float(a)
 	elif o == "-l":
 		longout=True
 	elif o == "-d":
@@ -123,12 +127,12 @@ def check_program(prgname):
 		print "ERROR: "+prgname+" is NOT in your PATH, please set up "+prgname+"!"
 		sys.exit(1)
 
-def run_blastn(fsa):
+def run_blastn(fsa,eset,nsub):
 	'''Running blastn with customized output format'''
 	check_program("blastn")
 	import subprocess
 	print ">> Running blast!!"
-	subprocess.call(['blastn','-query',fsa,'-evalue',str(eset),'-dust','no','-soft_masking','false','-db',db,'-num_threads','4','-outfmt','6 std score sstrand slen qlen','-out',fsa+'.blastn'])
+	subprocess.call(['blastn','-query',fsa,'-evalue',str(eset),'-dust','no','-soft_masking','false','-db',db,'-num_threads','4','-outfmt','6 std score sstrand slen qlen','-max_target_seqs',str(nsub),'-out',fsa+'.blastn'])
 	print ">> Blastn Finished!!"
 
 def get_dic_from_aln(aln):
@@ -155,7 +159,9 @@ def pairwise_score(alndic,query,match,mismatch,ngap):
 					hitscore[k]+=float(mismatch)
 				elif (alndic[query][i] in nt) and (v[i] in nt) and (alndic[query][i] != v[i]):
 					hitscore[k]+=float(ngap)		
-	total=sum(hitscore.values())
+	total=float(sum(hitscore.values()))
+	if total <= 0:
+		total=1
 	for k,v in hitscore.items():
 		hitscore[k]=v/total
 	return hitscore
@@ -227,7 +233,7 @@ check_program("blastdbcmd")
 check_program("muscle")
 
 ## Run blastn and output fas.blastn output
-run_blastn(fsa)
+run_blastn(fsa,eset,nsub)
 
 ## read in blastn output
 b=open(fsa+'.blastn')
@@ -259,16 +265,21 @@ for ln in b:
 	if evalue < eset and identity > iset and coverage >= cvrset and line[11]>bset:
 		giinfo[line[1]+":"+str(sstart)+"-"+str(send)]=[sstart,send,sstrand,bltscore,evalue,identity]
 		if line[0].replace("|","_") not in sublist:
+			subcount=1
 			topsc=float(line[11])
 			qtosdic[line[0].replace("|","_")]=[line[1]+":"+str(sstart)+"-"+str(send)]
 			sublist.append(line[0].replace("|","_"))
 		else:
 			bitsc=float(line[11])
-			if (topsc-bitsc)/topsc < topper: 
+			if (topsc-bitsc)/topsc < topper and subcount < nsub: 
 				qtosdic[line[0].replace("|","_")].append(line[1]+":"+str(sstart)+"-"+str(send))
-
+				subcount+=1
 b.close()
 print "> 1 > Read in blast output!"
+
+#print "Cut offs"
+#print "evalue:",eset,"identity:", iset, "coverage:", cvrset
+#print qtosdic.values()
 
 ### read in pre-formatted lineage information ###
 acc2tax=read_tax_acc(tax)
@@ -286,91 +297,85 @@ for k in range(0,len(fsaln),2):
 
 
 levels=["superkingdom","phylum","class","order","family","genus","species"]
-# for k1,v1 in qtosdic.items():
-for seqn in fsadic.keys():
-	k1=seqn
-	if qtosdic.has_key(k1):
-		v1=qtosdic[k1]
-		os.system("rm -f "+k1+".dblist")
-		os.system("rm -f "+k1+".hitdb.fsa")
-	### Get all the hits list belong to the same query ##
-		msafsa=open(k1+".dblist",'aw')
-		for g in v1:
-			msafsa.write(g.split(":")[0]+" "+str(giinfo[g][0])+"-"+str(giinfo[g][1])+" "+giinfo[g][2]+"\n")
-		msafsa.close()
-		os.system("blastdbcmd -db "+db+" -entry_batch "+k1+".dblist -outfmt %f > "+k1+".hitdb.fsa")
+#levels=["superkingdom","phylum","class","order","family","genus","subspecies","species"]
+for k1,v1 in qtosdic.items():
+	os.system("rm -f "+k1+".dblist")
+	os.system("rm -f "+k1+".hitdb.fsa")
+	### Get all the hits list belong to the same query ###
+	msafsa=open(k1+".dblist",'aw')
+	for g in v1:
+		msafsa.write(g.split(":")[0]+" "+str(giinfo[g][0])+"-"+str(giinfo[g][1])+" "+giinfo[g][2]+"\n")
+	msafsa.close()
+	os.system("blastdbcmd -db "+db+" -entry_batch "+k1+".dblist -outfmt %f > "+k1+".hitdb.fsa")
 	### Add query fasta sequence to extracted hit fasta ###
-		fifsa=open(k1+".hitdb.fsa",'aw')
-		fifsa.write(">"+k1+"\n"+fsadic[k1])
-		fifsa.close()
-	   	os.system("rm "+k1+".dblist")
+	fifsa=open(k1+".hitdb.fsa",'aw')
+	fifsa.write(">"+k1+"\n"+fsadic[k1])
+	fifsa.close()
+	os.system("rm "+k1+".dblist")
 	### Run muscle ###
-	   	os.system("muscle -quiet -clw -in "+k1+".hitdb.fsa -out "+k1+".muscle")
-	   	alndic=get_dic_from_aln(k1+".muscle")
-	   	os.system("rm "+k1+".hitdb.fsa")
-	   	os.system("rm "+k1+".muscle")
-    ### get gap position and truncate the alignment###
-	   	start,end=get_gap_pos(k1,alndic)
-	   	trunc_alndic=cut_gap(alndic,start,end)
-	   	orgscore=pairwise_score(trunc_alndic,k1,match,mismatch,ngap)
+	os.system("muscle -quiet -clw -in "+k1+".hitdb.fsa -out "+k1+".muscle")
+	alndic=get_dic_from_aln(k1+".muscle")
+	os.system("rm "+k1+".hitdb.fsa")
+	os.system("rm "+k1+".muscle")
+#    	print "Processing:",k1
+	### get gap position and truncate the alignment###
+	start,end=get_gap_pos(k1,alndic)
+	trunc_alndic=cut_gap(alndic,start,end)
+	orgscore=pairwise_score(trunc_alndic,k1,match,mismatch,ngap)
 	### start bootstrap ###
-	   	perdict={}	# record alignmet score for each iteration
-	   	pervote={}	# record vote after nper bootstrap
+	perdict={}	# record alignmet score for each iteration
+	pervote={}	# record vote after nper bootstrap
 	### If any equal score, average the vote ###
-	   	for j in range(nper):
-			tmpdic=random_aln_score(trunc_alndic,k1,match,mismatch,ngap)
-		  	perdict[j]=tmpdic
-		  	mx=max(tmpdic.values())
-		  	mxk=[k3 for k3,v3 in tmpdic.items() if v3 == mx]
-		  	if len(mxk)==1:
-			 	if pervote.has_key(max(tmpdic,key=tmpdic.get)):
-				    	pervote[max(tmpdic,key=tmpdic.get)]+=float(1)
-			 	else:
-				   	pervote[max(tmpdic,key=tmpdic.get)]=float(1)
-		  	else:
-			 	por=float(1)/len(mxk)
-			 	for h in mxk:
-				    	if pervote.has_key(h):
-                                	   	pervote[h]+=por
-                        	   	else:
-                                	   	pervote[h]=por
+	for j in range(nper):
+		tmpdic=random_aln_score(trunc_alndic,k1,match,mismatch,ngap)
+		perdict[j]=tmpdic
+		mx=max(tmpdic.values())
+		mxk=[k3 for k3,v3 in tmpdic.items() if v3 == mx]
+		if len(mxk)==1:
+			if pervote.has_key(max(tmpdic,key=tmpdic.get)):
+				pervote[max(tmpdic,key=tmpdic.get)]+=float(1)
+			else:
+				pervote[max(tmpdic,key=tmpdic.get)]=float(1)
+		else:
+			por=float(1)/len(mxk)
+			for h in mxk:
+				if pervote.has_key(h):
+                                	pervote[h]+=por
+                        	else:
+                                	pervote[h]=por
 	### normalize vote by total votes ###
-	   	ttlvote=sum(pervote.values())
-	   	for k4,v4 in pervote.items():
-		  	pervote[k4]=v4/ttlvote*100	
+	ttlvote=sum(pervote.values())
+	for k4,v4 in pervote.items():
+		pervote[k4]=v4/ttlvote*100	
 	### 
-	   	hitstax={}
-	   	outout=open(outfile,'aw')
-	   	for k5,v5 in orgscore.items():
-		  	shortk5=k5.split(".")[0]
-		  	if acc2tax.has_key(shortk5):
-			 	k2tax=acc2tax[shortk5]
-			 	mistx=list(set(levels)-set(k2tax.keys()))
-			 	for mis in mistx:
-				    	k2tax[mis]="Not Available"
-			 	if not pervote.has_key(k5):
-				    	pervote.update({k5:0})
-			 	hitstax[k5]=[k2tax,pervote[k5],orgscore[k5]]
-	   	voten=[y[1] for y in hitstax.values()]
-	   	prbn=[z[2] for z in hitstax.values()]
-	   	outout.write(k1+"\t")
-	   	for le in levels:
-		  	lex=[x[0][le] for x in hitstax.values()]
-		  	lexsum={}
-		  	prosum={}
-		  	for d in range(len(lex)):
-#			    	print voten[d]
-			 	if lexsum.has_key(lex[d]):
-				    	lexsum[lex[d]]+=voten[d]
-				    	prosum[lex[d]]+=prbn[d]
-			 	else:
-				    	lexsum[lex[d]]=voten[d]
-				    	prosum[lex[d]]=prbn[d]
-		  	outout.write(le+":"+max(lexsum,key=lexsum.get)+";"+str(max(lexsum.values()))+";")
-	   	outout.write("\n")
-	else:
-		outout.write(k1+"\tUnclassified\n")
-
-outout.close()
+	hitstax={}
+	outout=open(outfile,'aw')
+	for k5,v5 in orgscore.items():
+		shortk5=k5.split(".")[0]
+		if acc2tax.has_key(shortk5):
+			k2tax=acc2tax[shortk5]
+			mistx=list(set(levels)-set(k2tax.keys()))
+			for mis in mistx:
+				k2tax[mis]="Not Available"		
+			if not pervote.has_key(k5):
+				pervote.update({k5:0})
+			hitstax[k5]=[k2tax,pervote[k5],orgscore[k5]]
+	voten=[y[1] for y in hitstax.values()]
+	prbn=[z[2] for z in hitstax.values()]
+	outout.write(k1+"\t")
+	for le in levels:
+		lex=[x[0][le] for x in hitstax.values()]
+		lexsum={}
+		prosum={}
+		for d in range(len(lex)):
+#			print voten[d]
+			if lexsum.has_key(lex[d]):
+				lexsum[lex[d]]+=voten[d]
+				prosum[lex[d]]+=prbn[d]
+			else:
+				lexsum[lex[d]]=voten[d]
+				prosum[lex[d]]=prbn[d]
+		outout.write(le+":"+max(lexsum,key=lexsum.get)+";"+str(max(lexsum.values()))+";")
+	outout.write("\n")
+	outout.close()
 print ">> Taxonomy file generated!!"
-
