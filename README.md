@@ -96,7 +96,7 @@ Arguments:
 	-h		Show program usage and quit
 ```
 ### Split input fasta (Optional)
-* If you have a big fasta file, and you want to run BLCA in "parallel", you can use this python package (https://pypi.python.org/pypi/pyfasta/#command-line-interface) to split fasta sequences into multiple parts, then run BLCA on each individual part.
+* If you have a big fasta file, and you want to run BLCA in "parallel", you can use [this python package](https://pypi.python.org/pypi/pyfasta/#command-line-interface) to split fasta sequences into multiple parts, then run BLCA on each individual part.
 
 ### Step 2 
 * Run your analysis with the compiled database. Please run:
