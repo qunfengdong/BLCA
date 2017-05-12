@@ -4,6 +4,9 @@ Bayesian LCA-based Taxonomic Classification Method (BLCA) is a Bayesian-based me
 
 We implemented the above algorithm as a simple python script here.
 
+## Update
+* May 11 2017 update to be compatiable for the latest blastn v2.5 and added a new parameter -j to limit the accepted hits number to 50. After another round of testing, we've decided to change the default value of coverage and identify filter to 0.80 and 90 respectively.
+
 ## Prerequisities
 * Python 2.7
 * Linux
@@ -11,7 +14,7 @@ We implemented the above algorithm as a simple python script here.
 
 ### **The following programs should be in your PATH:**
 
-* BLAST binary (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.3.0/)
+* BLAST binary (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.5.0/)
 * MUSCLE (http://www.drive5.com/muscle/downloads.htm)
 
 ## Citation
@@ -122,18 +125,18 @@ $ python 2.blca_main.py -h
 
 Usage: python 2.blca_main.py -i <fasta file> [option]
 
-
+ 
 Arguments:
  - Required:
 	-i		Input fasta file.
  - Taxonomy Profiling Options [filtering of hits]:
 	-n		Number of times to bootstrap. Default: 100
-	-t		Extra number of nucleotides to include at the beginning and end of the hits. Default: 10
+	-j		Maximum number of subjects to include for each query reads. Default: 50
 	-d		Proportion of hits to include from top hit. Default: 0.1 [0-1]
 	-e		Minimum evalue to include for blastn. Default: 0.1
 	-a		Minimum bitscore to include for blastn hits. Default: 100
-	-c		Minimum coverage to include. Default: 0.95 [0-1]
-	-b		Minimum identity score to include. Default: 95 [0-100]
+	-c		Minimum coverage to include. Default: 0.85 [0-1]
+	-b		Minimum identity score to include. Default: 90 [0-100]
 	-r		Reference Taxonomy file for the Database. Default: db/16SMicrobial.ACC.taxonomy
 	-q		Refernece blast database. Default: db/16SMicrobial
 	-o		Output file name. Default: <fasta>.blca.out
@@ -142,6 +145,7 @@ Arguments:
 	-f		Alignment mismatch penalty. Default: -2.5
 	-g		Alignment gap penalty. Default: -2
  - Other:
+	-t		Extra number of nucleotides to include at the beginning and end of the hits. Default: 10
 	-h		Show program usage and quit
 ```
 
