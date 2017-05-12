@@ -19,7 +19,7 @@ We implemented the above algorithm as a simple python script here.
 
 ## Citation
 
-In press. Will update when accepted.
+[A Bayesian Taxonomic Classification Method for 16S rRNA Gene Sequences with Improved Species-level Accuracy](https://www.ncbi.nlm.nih.gov/pubmed/28486927). *Xiang Gao; Huaiying Lin; Kashi Revanna; Qunfeng Dong* BMC Bioinformatics 2017 May 10;18(1):247.
 
 ## Install
 To check out the source code, go to https://github.com/qunfengdong/BLCA. To obtain the scripts and example fasta files, do the following:
