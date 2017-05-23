@@ -15,8 +15,7 @@ import os
 import math
 
 try:
-	from Bio import AlignIO
-	from BIo import SeqIO
+	from Bio import AlignIO,SeqIO
 except ImportError:
 	sys.stderr.write("Error! BioPython is not detected!\n")
 	sys.exit(1)
