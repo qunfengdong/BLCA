@@ -7,6 +7,21 @@ We implemented the above algorithm as a simple python script here.
 ## Update
 * **May 11 2017 update** to be compatiable for the latest blastn v2.5 and added a new parameter -j to limit the accepted hits number to 50. After another round of testing, we've decided to change the default value of coverage and identify filter to 0.80 and 90 respectively.
 
+## Important Note
+* BLCA currently is only compatiable with blastn 2.5.0+, please make sure you have blast 2.5.0. Any error messages raised as
+```python
+outout.write(le+":"+max(lexsum,key=lexsum.get)+";"+str(max(lexsum.values()))+";")
+ValueError: max() arg is an empty sequence
+```
+could be a blastn version issue.
+* Read ID length should be limited to 28 due to limited ID space in muscle output. Any error messages raise as 
+```python
+seq=fsaln[k+1].rstrip()
+IndexError: list index out of range
+```
+could be a sequence ID issue. Please shorten your read ID to no more than 28 characters. 
+
+
 ## Prerequisities
 * Python 2.7
 * Linux
