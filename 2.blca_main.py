@@ -296,6 +296,8 @@ for k in range(0,len(fsaln),2):
 #print "> 4 > Fasta file read in!!"
 
 
+os.system("rm -f "+outfile)
+outout=open(outfile,'aw')
 levels=["superkingdom","phylum","class","order","family","genus","species"]
 for seqn in fsadic.keys():
 # for k1,v1 in qtosdic.items():
@@ -352,7 +354,6 @@ for seqn in fsadic.keys():
 			pervote[k4]=v4/ttlvote*100	
 	### 
 		hitstax={}
-		outout=open(outfile,'aw')
 		for k5,v5 in orgscore.items():
 			shortk5=k5.split(".")[0]
 			if acc2tax.has_key(shortk5):
