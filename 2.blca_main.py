@@ -16,6 +16,7 @@ import math
 
 try:
 	from Bio import AlignIO
+	from BIo import SeqIO
 except ImportError:
 	sys.stderr.write("Error! BioPython is not detected!\n")
 	sys.exit(1)
@@ -285,16 +286,11 @@ print "> 1 > Read in blast output!"
 acc2tax=read_tax_acc(tax)
 
 ### read in input fasta file ###
-f=open(fsa)
-fsaln=f.readlines()
-f.close()
 fsadic={}
-for k in range(0,len(fsaln),2):
-	name=fsaln[k].rstrip().split(" ")[0].replace(">","").replace("|","_")
-	seq=fsaln[k+1].rstrip()
-	fsadic[name]=seq	
+with open(fsa) as f:
+	for r in SeqIO.parse(f,"fasta"):
+		fsadic[r.id] = str(r.seq)
 #print "> 4 > Fasta file read in!!"
-
 
 os.system("rm -f "+outfile)
 outout=open(outfile,'aw')
