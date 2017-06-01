@@ -171,8 +171,13 @@ seq96	Unclassified
 ## Training your own database
 
 * BLCA main script 2.blca_main.py needs 
-1. A BLAST formatted library from a custmized fasta file, using makeblastdb, as the following:
+1. A BLAST formatted library from a fasta file containing sequences of your interest, using makeblastdb, as the following:
 ```
+\>NR_117221.1
+AGTCGATCGATCGATCATCGCTCTCTAGAGAGAAAACCCGATCGATCGA...
+\>NR_144700.1
+CGCGCGACGAGCAAGCGCAAACGGCAACGCGCGAAACCCGCGAGCGAGA...
+
 makeblastdb -in YourDatabase.fasta -dbtype nucl -parse_seqids -out YourDatabase
 ```
 
