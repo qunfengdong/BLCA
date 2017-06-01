@@ -190,6 +190,11 @@ NR_113104.1     species:Prevotella enoeca;genus:Prevotella;family:Prevotellaceae
 NR_027573.1     species:Intestinibacter bartlettii;genus:Intestinibacter;family:Peptostreptococcaceae;order:Clostridiales;class:Clostridia;phylum:Firmicutes;superkingdom:Bacteria;
 ```
 
+3. Run 2.blca_main.py with the formatted database and taxonomy file.
+```python
+python 2.blca_main.py -i test.fasta -r /location/to/your/database/YourDatabase.taxonomy -q /location/to/your/database/YourDatabase
+```
+
 ## Version
 * Version 2.1 An alternative public release
 
