@@ -178,7 +178,7 @@ AGTCGATCGATCGATCATCGCTCTCTAGAGAGAAAACCCGATCGATCGA...
 >NR_144700.1
 CGCGCGACGAGCAAGCGCAAACGGCAACGCGCGAAACCCGCGAGCGAGA...
 
-makeblastdb -in YourDatabase.fasta -dbtype nucl -parse_seqids -out YourDatabase
+$ makeblastdb -in YourDatabase.fasta -dbtype nucl -parse_seqids -out YourDatabase
 ```
 
 2. A taxonomy file with two columns, sequence ID in fasta file, and its taxonomy from superkingdom to species in the following format:
@@ -191,8 +191,8 @@ NR_027573.1     species:Intestinibacter bartlettii;genus:Intestinibacter;family:
 ```
 
 3. Run 2.blca_main.py with the formatted database and taxonomy file.
-```python
-python 2.blca_main.py -i test.fasta -r /location/to/your/database/YourDatabase.taxonomy -q /location/to/your/database/YourDatabase
+```
+$ python 2.blca_main.py -i test.fasta -r /location/to/your/database/YourDatabase.taxonomy -q /location/to/your/database/YourDatabase
 ```
 
 ## Version
