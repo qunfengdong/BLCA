@@ -173,9 +173,9 @@ seq96	Unclassified
 * BLCA main script 2.blca_main.py needs 
 1. A BLAST formatted library from a fasta file containing sequences of your interest, using makeblastdb, as the following:
 ```
-\>NR_117221.1
+>NR_117221.1
 AGTCGATCGATCGATCATCGCTCTCTAGAGAGAAAACCCGATCGATCGA...
-\>NR_144700.1
+>NR_144700.1
 CGCGCGACGAGCAAGCGCAAACGGCAACGCGCGAAACCCGCGAGCGAGA...
 
 makeblastdb -in YourDatabase.fasta -dbtype nucl -parse_seqids -out YourDatabase
