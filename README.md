@@ -168,6 +168,23 @@ seq93	superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacter
 seq96	Unclassified
 ```
 
+## Training your own database
+
+* BLCA main script 2.blca_main.py needs 
+1. A BLAST formatted library from a custmized fasta file, using makeblastdb, as the following:
+```
+makeblastdb -in YourDatabase.fasta -dbtype nucl -parse_seqids -out YourDatabase
+```
+
+2. A taxonomy file with two columns, sequence ID in fasta file, and its taxonomy from ```
+kindom to speices in the following format:
+NR_117221.1     species:Mycobacterium arosiense;genus:Mycobacterium;family:Mycobacteriaceae;order:Corynebacteriales;class:Actinobacteria;phylum:Actinobacteria;superkingdom:Bacteria;
+NR_144700.1     species:Virgibacillus massiliensis;genus:Virgibacillus;family:Bacillaceae;order:Bacillales;class:Bacilli;phylum:Firmicutes;superkingdom:Bacteria;
+NR_108831.1     species:Bacillus endoradicis;genus:Bacillus;family:Bacillaceae;order:Bacillales;class:Bacilli;phylum:Firmicutes;superkingdom:Bacteria;
+NR_113104.1     species:Prevotella enoeca;genus:Prevotella;family:Prevotellaceae;order:Bacteroidales;class:Bacteroidia;phylum:Bacteroidetes;superkingdom:Bacteria;
+NR_027573.1     species:Intestinibacter bartlettii;genus:Intestinibacter;family:Peptostreptococcaceae;order:Clostridiales;class:Clostridia;phylum:Firmicutes;superkingdom:Bacteria;
+```
+
 ## Version
 * Version 2.1 An alternative public release
 
