@@ -233,7 +233,7 @@ check_program("blastdbcmd")
 check_program("muscle")
 
 ## Run blastn and output fas.blastn output
-run_blastn(fsa,eset,nsub)
+#run_blastn(fsa,eset,nsub)
 
 ## read in blastn output
 b=open(fsa+'.blastn')
@@ -297,7 +297,7 @@ levels=["superkingdom","phylum","class","order","family","genus","species"]
 for seqn in fsadic.keys():
 # for k1,v1 in qtosdic.items():
 	k1=seqn
-	if k1 in qtosdic:
+	if k1 in qtosdic and k1 not in acc2tax:
 		v1=qtosdic[k1]
 		os.system("rm -f "+k1+".dblist")
 		os.system("rm -f "+k1+".hitdb.fsa")
@@ -375,7 +375,11 @@ for seqn in fsadic.keys():
 					lexsum[lex[d]]=voten[d]
 					prosum[lex[d]]=prbn[d]
 			outout.write(le+":"+max(lexsum,key=lexsum.get)+";"+str(max(lexsum.values()))+";")
-		outout.write("\n")				
+		outout.write("\n")
+	elif k1 in acc2tax:
+		print "[WARNING] Your sequence "+k1+" has the same ID as the reference database! Please correct it!"
+		print "...Skipping sequence "+k1+" ......"
+		outout.write(k1+"\tSkipped\n")
 	else:
 		outout.write(k1+"\tUnclassified\n")
 		
