@@ -233,7 +233,7 @@ check_program("blastdbcmd")
 check_program("muscle")
 
 ## Run blastn and output fas.blastn output
-#run_blastn(fsa,eset,nsub)
+run_blastn(fsa,eset,nsub)
 
 ## read in blastn output
 b=open(fsa+'.blastn')
