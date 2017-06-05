@@ -159,11 +159,14 @@ Arguments:
 
 ## Output
 * A text file with sequence id in the first column, and taxonomy annotation with confidence scores after each level of annotaion (superkingdom, phylum, class, order, family, genus, species).
-* Any reads that do not have a classification will be recorded as "unclassified".
+* Any reads that do not have a classification will be recorded as "Unclassified".
+* There could be cases having the confidence score showing while there is no taxonomy assignment at genus/species level. It is due to the lack of taxonomy information in the database.
 
 ### Example output file:
 ```
 seq94	superkingdom:Bacteria;100.0;phylum:Firmicutes;100.0;class:Clostridia;100.0;order:Clostridiales;100.0;family:Lachnospiraceae;100.0;genus:Lachnoclostridium;100.0;species:[Clostridium] symbiosum;100.0;
+seq89   superkingdom:Bacteria;100.0;phylum:Proteobacteria;100.0;class:Gammaproteobacteria;100.0;order:Aeromonadales;57.4166666667;family:Aeromonadaceae;57.4166666667;genus:;57.4166666667;species:;100.0;
+seq87      superkingdom:Bacteria;100.0;phylum:Firmicutes;100.0;class:Clostridia;100.0;order:Clostridiales;100.0;family:Ruminococcaceae;100.0;genus:;69.0019047619;species:;100.0;
 seq93	superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacteria;100.0;order:Corynebacteriales;100.0;family:Nocardiaceae;100.0;genus:Rhodococcus;100.0;species:Rhodococcus zopfii;99.5;
 seq96	Unclassified
 ```
