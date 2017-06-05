@@ -166,7 +166,7 @@ Arguments:
 ```
 seq94	superkingdom:Bacteria;100.0;phylum:Firmicutes;100.0;class:Clostridia;100.0;order:Clostridiales;100.0;family:Lachnospiraceae;100.0;genus:Lachnoclostridium;100.0;species:[Clostridium] symbiosum;100.0;
 seq89   superkingdom:Bacteria;100.0;phylum:Proteobacteria;100.0;class:Gammaproteobacteria;100.0;order:Aeromonadales;57.4166666667;family:Aeromonadaceae;57.4166666667;genus:;57.4166666667;species:;100.0;
-seq87      superkingdom:Bacteria;100.0;phylum:Firmicutes;100.0;class:Clostridia;100.0;order:Clostridiales;100.0;family:Ruminococcaceae;100.0;genus:;69.0019047619;species:;100.0;
+seq87   superkingdom:Bacteria;100.0;phylum:Firmicutes;100.0;class:Clostridia;100.0;order:Clostridiales;100.0;family:Ruminococcaceae;100.0;genus:;69.0019047619;species:;100.0;
 seq93	superkingdom:Bacteria;100.0;phylum:Actinobacteria;100.0;class:Actinobacteria;100.0;order:Corynebacteriales;100.0;family:Nocardiaceae;100.0;genus:Rhodococcus;100.0;species:Rhodococcus zopfii;99.5;
 seq96	Unclassified
 ```
