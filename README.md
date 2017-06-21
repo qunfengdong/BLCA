@@ -14,6 +14,7 @@ outout.write(le+":"+max(lexsum,key=lexsum.get)+";"+str(max(lexsum.values()))+";"
 ValueError: max() arg is an empty sequence
 ```
 * Read ID length should be no more than **28** due to limited ID space in muscle output. 
+* There should **NOT** be any "|" (pipe) present in the sequence ID of input fasta, database fasta and taxonomy files.
 
 ## Prerequisities
 * Python 2.7
