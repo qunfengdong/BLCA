@@ -76,7 +76,7 @@ for o,a in opts:
 		fsa=a
 		outfile=fsa+".blca.out"
 	elif o == "-n":
-		nper=float(a)
+		nper=int(a)
 	elif o== "-j":
 		nsub=int(a)
 	elif o == "-t":
