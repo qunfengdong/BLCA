@@ -6,7 +6,7 @@ __credits__ = ["Xiang Gao", "Huaiying Lin","Qunfeng Dong"]
 __license__ = "GPL"
 __version__ = "2.1"
 __maintainer__ = "Huaiying Lin"
-__email__ = "ying.eddi2008@gmail.com"
+__email__ = "hlin2@luc.edu"
 __status__ = "Production"
 
 
@@ -22,95 +22,25 @@ except ImportError:
 
 import random
 import subprocess
-import getopt
-# import argparse
+import argparse
 
 '''
 BLCA Core annotation tool
 
 '''
 
-def usage():
-	print "\n<< Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your PATH:\n\t1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.\n\t2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)\n\t3.Biopython should be installed locally.\n"
-	print 'Usage: python '+sys.argv[0]+' -i <fasta file> [option]\n'
-	print " \nArguments:\n - Required:"
-	print "\t-i\t\tInput fasta file.\n - Taxonomy Profiling Options [filtering of hits]:"
-	print "\t-n\t\tNumber of times to bootstrap. Default: 100"
-	print "\t-j\t\tMaximum number of subjects to include for each query reads. Default: 50"
-	print "\t-d\t\tProportion of hits to include from top hit. Default: 0.1 [0-1]"
-	print "\t-e\t\tMinimum evalue to include for blastn. Default: 0.1"
-	print "\t-a\t\tMinimum bitscore to include for blastn hits. Default: 100"
-	print "\t-c\t\tMinimum coverage to include. Default: 0.85 [0-1]"
-	print "\t-b\t\tMinimum identity score to include. Default: 90 [0-100]"
-	print "\t-r\t\tReference Taxonomy file for the Database. Default: db/16SMicrobial.ACC.taxonomy"
-	print "\t-q\t\tRefernece blast database. Default: db/16SMicrobial"
-	print "\t-o\t\tOutput file name. Default: <fasta>.blca.out\n - Alignment Options:"
-	print "\t-m\t\tAlignment match score. Default: 1"
-	print "\t-f\t\tAlignment mismatch penalty. Default: -2.5"
-	print "\t-g\t\tAlignment gap penalty. Default: -2\n - Other:"
-	print "\t-t\t\tExtra number of nucleotides to include at the beginning and end of the hits. Default: 10"
-	print "\t-h\t\tShow program usage and quit" 
+def float_1range(x):
+	x = float(x)
+	if x < 0.0 or x > 1.0:
+		raise argparse.ArgumentTypeError("%r not in range [0.0, 1.0]"%(x,))
+	return x
 
-####set up default parameters #######
-### bootstrap times ###
-nper=100            # number of bootstrap to permute
-### Filter hits per query ###
-iset=float(90.0)    # identify threshold
-eset=float(0.1)     # evalue threshold
-gap=10              # number of nucleotides to include at the beginning and end of the hits
-topper=float(0.1)   # top percentage to include hits
-cvrset=float(0.80)  # coverage to include
-bset=float(100)     # minimum bitscore to include
-nsub=50		    # maximum number of subjects to include
-### Alignment options ###
-ngap=-2             # gap penalty
-match=1             # match score
-mismatch=-2.5       # mismatch penalty
-### pre-formatted taxonomy and blastn database ###
-tax='./db/16SMicrobial.ACC.taxonomy'
-db='./db/16SMicrobial'
-
-opts, args=getopt.getopt(sys.argv[1:],"a:b:c:d:e:f:g:i:j:lm:n:o:r:q:t:h",['Minimum bitscore','Minimum Identity','Minimum Coverage','Top Proportion','Minimum evalue','Alignment Mismatch Penalty','Alignment Gap Penalty','Input File','Maximum Subjects','Long Output','Alignment Match Score','Number of Bootstrap to Run','Output File','Taxonomy File of Database','Reference Blastn Database','Number of nt Length of Sequence','help'])
-for o,a in opts:
-	if o == "-i":
-		fsa=a
-		outfile=fsa+".blca.out"
-	elif o == "-n":
-		nper=int(a)
-	elif o== "-j":
-		nsub=int(a)
-	elif o == "-t":
-		gap=float(a)
-	elif o == "-c":
-		cvrset=float(a)
-	elif o == "-l":
-		longout=True
-	elif o == "-d":
-		topper=float(a)
-	elif o == "-e":
-		eset=float(a)
-	elif o == "-f":
-		mismatch=float(a)
-	elif o == "-g":
-		ngap=float(a)
-	elif o == "-q":
-		db=a
-	elif o == "-m":
-		match=float(a)
-	elif o == "-b":
-		iset=float(a)
-	elif o== "-o":
-		outfile=a
-	elif o== "-r":
-		tax=a
-	elif o== "-a":
-		bset=float(a)	
-	elif o in ('-h','--help'):
-		print usage()
-		sys.exit(1)
-	else:
-		assert False, 'unhandle option'
-
+def float_100range(x):
+	x = float(x)
+	if x < 0.0 or x > 100.0:
+		raise argparse.ArgumentTypeError("%r not in range [0.0, 100.0]"%(x,))
+	return x
+	
 def check_taxdb():
 	''' Check whether BLASTDB environmental variable has been setup'''
 	if 'BLASTDB' not in os.environ.keys():
@@ -127,7 +57,7 @@ def check_program(prgname):
 		print "ERROR: "+prgname+" is NOT in your PATH, please set up "+prgname+"!"
 		sys.exit(1)
 
-def run_blastn(fsa,eset,nsub):
+def run_blastn(fsa,eset,nsub,db):
 	'''Running blastn with customized output format'''
 	check_program("blastn")
 	import subprocess
@@ -207,15 +137,51 @@ def cut_gap(alndic,start,end):
 	return trunc_alndic
 
 def read_tax_acc(taxfile):
-	tx=open(taxfile)
 	acctax={}
 	print "> 3 > Read in taxonomy information!"
-	for l in tx:
-        	lne=l.rstrip().strip(";").split("\t")
-		if len(lne)==2:
-	                acctax[lne[0].split(".")[0]]=dict( x.split(":",1) for x in lne[1].split(";"))
-	tx.close()
+	with open(taxfile) as tx:
+		for l in tx:
+			lne=l.rstrip().strip(";").split("\t")
+			if len(lne)==2:
+				acctax[lne[0].split(".")[0]]=dict( x.split(":",1) for x in lne[1].split(";"))
 	return acctax
+
+##### parser ######
+	
+parser = argparse.ArgumentParser(description=
+''' << Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your PATH:
+	1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
+	2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)\n\t3.Biopython should be installed locally.''',
+	epilog="No warrenty comes with this script. Author: hlin2@luc.edu. \nAny suggestions or bugs report are welcomed.",add_help=False,formatter_class=argparse.RawTextHelpFormatter)
+##### Required arguments #####
+required = parser.add_argument_group('required arguments')
+required.add_argument("-i","--fsa", help="Input fasta file",type=str,required=True)
+##### Taxonomy filtering arguments #####
+taxoptions = parser.add_argument_group('taxonomy profiling options [filtering of hits]')
+taxoptions.add_argument("-n","--nper",help="number of times to bootstrap. Default: 100",type=int,default=100)
+taxoptions.add_argument("-j","--nsub",help="maximum number of subjects to include for each query reads. Default: 50",type=int,default=50)
+taxoptions.add_argument("-d","--topper",help="proportion of hits to include from top hit. Default: 0.1 [0-1]",type=float_1range,default=0.1)
+taxoptions.add_argument("-e","--eset",help="minimum evalue to include for blastn. Default: 0.1",type=float,default=0.1)
+taxoptions.add_argument("-b","--bset",help="minimum bitscore to include for blastn hits. Default: 100",type=int,default=100)
+taxoptions.add_argument("-c","--cvrset",help="minimum coverage to include. Default: 0.85 [0-1]",type=float_1range,default=0.85)
+taxoptions.add_argument("--iset",help="minimum identity score to include. Default: 90 [0-100]",type=float_100range,default=90.0)
+##### Alignment control arguments #####
+alignoptions = parser.add_argument_group('alignment control arguments')
+alignoptions.add_argument("-m","--match",default=1.0,help="alignment match score. Default: 1",type=float)
+alignoptions.add_argument("-f","--mismatch",default=-2.5,help="alignment mismatch penalty. Default: -2.5",type=float)
+alignoptions.add_argument("-g","--ngap",default=-2.0,help="alignment gap penalty. Default: -2",type=float)
+##### Other arguments #####
+optional = parser.add_argument_group('other arguments')
+optional.add_argument("-r","--tax",default='./db/16SMicrobial.ACC.taxonomy',help="reference taxonomy file for the Database. Default: db/16SMicrobial.ACC.taxonomy",type=str)
+optional.add_argument("-q","--db",default='./db/16SMicrobial',help="refernece blast database. Default: db/16SMicrobial",type=str)
+optional.add_argument("-t","--gap",default=10,help="extra number of nucleotides to include at the beginning and end of the hits. Default: 10",type=int)
+optional.add_argument("-o","--outfile",help="output file name. Default: <fasta>.blca.out",type=str)
+optional.add_argument("-h","--help",help="show this help message and exit",action="help")
+##### parse arguments #####
+args = parser.parse_args()
+##### Output file name ####
+if not args.outfile:
+	args.outfile=args.fsa+".blca.out"
 
 ################################################################
 ##
@@ -233,10 +199,10 @@ check_program("blastdbcmd")
 check_program("muscle")
 
 ## Run blastn and output fas.blastn output
-run_blastn(fsa,eset,nsub)
+run_blastn(args.fsa,args.eset,args.nsub,args.db)
 
 ## read in blastn output
-b=open(fsa+'.blastn')
+b=open(args.fsa+'.blastn')
 qtosdic={}
 giinfo={}
 sublist=[]
@@ -251,18 +217,18 @@ for ln in b:
 	evalue=float(line[10])
 	identity=float(line[2])
     ### extend sstart and send by gap ###
-	if (sstart-gap)<1:
+	if (sstart-args.gap)<1:
 		sstart=1
 	else:
-		sstart-=gap
-	if (send+gap)>slen:
+		sstart-=args.gap
+	if (send+args.gap)>slen:
 		send=slen
 	else:
-		send+=gap
+		send+=args.gap
     ### calculate coverage ###
 	coverage=float(line[3])/float(line[15])
     ### filter hits ###
-	if evalue < eset and identity > iset and coverage >= cvrset and line[11]>bset:
+	if evalue < args.eset and identity > args.iset and coverage >= args.cvrset and line[11]> args.bset:
 		giinfo[line[1]+":"+str(sstart)+"-"+str(send)]=[sstart,send,sstrand,bltscore,evalue,identity]
 		if line[0].replace("|","_") not in sublist:
 			subcount=1
@@ -271,7 +237,7 @@ for ln in b:
 			sublist.append(line[0].replace("|","_"))
 		else:
 			bitsc=float(line[11])
-			if (topsc-bitsc)/topsc < topper and subcount < nsub: 
+			if (topsc-bitsc)/topsc < args.topper and subcount <= args.nsub: 
 				qtosdic[line[0].replace("|","_")].append(line[1]+":"+str(sstart)+"-"+str(send))
 				subcount+=1
 b.close()
@@ -282,17 +248,17 @@ print "> 1 > Read in blast output!"
 #print qtosdic.values()
 
 ### read in pre-formatted lineage information ###
-acc2tax=read_tax_acc(tax)
+acc2tax=read_tax_acc(args.tax)
 
 ### read in input fasta file ###
 fsadic={}
-with open(fsa) as f:
+with open(args.fsa) as f:
 	for r in SeqIO.parse(f,"fasta"):
 		fsadic[r.id] = str(r.seq)
 #print "> 4 > Fasta file read in!!"
 
-os.system("rm -f "+outfile)
-outout=open(outfile,'aw')
+os.system("rm -f "+args.outfile)
+outout=open(args.outfile,'aw')
 levels=["superkingdom","phylum","class","order","family","genus","species"]
 for seqn in fsadic.keys():
 # for k1,v1 in qtosdic.items():
@@ -306,7 +272,7 @@ for seqn in fsadic.keys():
 		for g in v1:
 			msafsa.write(g.split(":")[0]+" "+str(giinfo[g][0])+"-"+str(giinfo[g][1])+" "+giinfo[g][2]+"\n")
 		msafsa.close()
-		os.system("blastdbcmd -db "+db+" -entry_batch "+k1+".dblist -outfmt %f > "+k1+".hitdb.fsa")
+		os.system("blastdbcmd -db "+args.db+" -entry_batch "+k1+".dblist -outfmt %f > "+k1+".hitdb.fsa")
 	### Add query fasta sequence to extracted hit fasta ###
 		fifsa=open(k1+".hitdb.fsa",'aw')
 		fifsa.write(">"+k1+"\n"+fsadic[k1])
@@ -321,13 +287,13 @@ for seqn in fsadic.keys():
 	### get gap position and truncate the alignment###
 		start,end=get_gap_pos(k1,alndic)
 		trunc_alndic=cut_gap(alndic,start,end)
-		orgscore=pairwise_score(trunc_alndic,k1,match,mismatch,ngap)
+		orgscore=pairwise_score(trunc_alndic,k1,args.match,args.mismatch,args.ngap)
 	### start bootstrap ###
 		perdict={}	# record alignmet score for each iteration
 		pervote={}	# record vote after nper bootstrap
 	### If any equal score, average the vote ###
-		for j in range(nper):
-			tmpdic=random_aln_score(trunc_alndic,k1,match,mismatch,ngap)
+		for j in range(args.nper):
+			tmpdic=random_aln_score(trunc_alndic,k1,args.match,args.mismatch,args.ngap)
 			perdict[j]=tmpdic
 			mx=max(tmpdic.values())
 			mxk=[k3 for k3,v3 in tmpdic.items() if v3 == mx]
