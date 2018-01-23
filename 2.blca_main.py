@@ -61,9 +61,9 @@ def run_blastn(fsa,eset,nsub,db):
 	'''Running blastn with customized output format'''
 	check_program("blastn")
 	import subprocess
-	print ">> Running blast!!"
+	print "> > Running blast!!"
 	subprocess.call(['blastn','-query',fsa,'-evalue',str(eset),'-dust','no','-soft_masking','false','-db',db,'-num_threads','4','-outfmt','6 std score sstrand slen qlen','-max_target_seqs',str(nsub),'-out',fsa+'.blastn'])
-	print ">> Blastn Finished!!"
+	print "> > Blastn Finished!!"
 
 def get_dic_from_aln(aln):
 	'''Read in alignment and convert it into a dictionary'''
@@ -136,14 +136,18 @@ def cut_gap(alndic,start,end):
 		trunc_alndic[k_truc]=v_truc[start:end]
 	return trunc_alndic
 
-def read_tax_acc(taxfile):
+def read_tax_acc(taxfile,IDlen):
 	acctax={}
-	print "> 3 > Read in taxonomy information!"
+	print ">  > Read in taxonomy information!"
 	with open(taxfile) as tx:
 		for l in tx:
 			lne=l.rstrip().strip(";").split("\t")
 			if len(lne)==2:
-				acctax[lne[0].split(".")[0]]=dict( x.split(":",1) for x in lne[1].split(";"))
+				if len(lne[0] > IDlen):
+					print "Your reference sequence ID length longer than 32, please shorten your ID length and try again!! "
+					sys.exit(1)
+				else:
+					acctax[lne[0].split(".")[0]]=dict( x.split(":",1) for x in lne[1].split(";"))
 	return acctax
 
 ##### parser ######
@@ -192,11 +196,27 @@ if not args.outfile:
 ## check taxdb
 # check_taxdb()
 
+IDlenallow = 32
+
 ## check whether blastdbcmd is located in the path
 check_program("blastdbcmd")
 
 ## check whether muscle is located in the path
 check_program("muscle")
+
+### read in input fasta file ###
+fsadic={}
+with open(args.fsa) as f:
+	for r in SeqIO.parse(f,"fasta"):
+		if len(r.id) > IDlenallow:
+			print "Your query ID length is longer than 32, please shorten your ID length and try again!!"
+			sys.exit(1)
+		else:
+			fsadic[r.id] = str(r.seq)
+print ">  > Fasta file read in!!"
+
+### read in pre-formatted lineage information ###
+acc2tax=read_tax_acc(args.tax,IDlen=IDlenallow)
 
 ## Run blastn and output fas.blastn output
 run_blastn(args.fsa,args.eset,args.nsub,args.db)
@@ -241,22 +261,11 @@ for ln in b:
 				qtosdic[line[0].replace("|","_")].append(line[1]+":"+str(sstart)+"-"+str(send))
 				subcount+=1
 b.close()
-print "> 1 > Read in blast output!"
+print ">  > Read in blast output!"
 
 #print "Cut offs"
 #print "evalue:",eset,"identity:", iset, "coverage:", cvrset
 #print qtosdic.values()
-
-### read in pre-formatted lineage information ###
-acc2tax=read_tax_acc(args.tax)
-
-### read in input fasta file ###
-fsadic={}
-with open(args.fsa) as f:
-	for r in SeqIO.parse(f,"fasta"):
-		fsadic[r.id] = str(r.seq)
-#print "> 4 > Fasta file read in!!"
-
 os.system("rm -f "+args.outfile)
 outout=open(args.outfile,'aw')
 levels=["superkingdom","phylum","class","order","family","genus","species"]
