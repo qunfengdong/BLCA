@@ -8,12 +8,8 @@ We implemented the above algorithm as a simple python script here.
 * **May 11 2017 update** to be compatiable for the latest blastn v2.5 and added a new parameter -j to limit the accepted hits number to 50. After another round of testing, we've decided to change the default value of coverage and identify filter to 0.80 and 90 respectively.
 
 ## Important Note -- Please do read
-* BLCA currently is only compatiable with **blast 2.5.0+**, please make sure you have blast 2.5.0. Any error messages raised as the following could be a blastn version issue.
-```shell
-outout.write(le+":"+max(lexsum,key=lexsum.get)+";"+str(max(lexsum.values()))+";")
-ValueError: max() arg is an empty sequence
-```
-* Read ID length should be no more than **28** due to limited ID space in muscle output. 
+* BLCA currently is only compatiable with **blast 2.5.0+**, please make sure you have blast 2.5.0. 
+* Read ID and Reference genome ID length should be both not more than **32** due to limited ID space in muscle output. 
 * There should **NOT** be any "|" (pipe) present in the sequence ID of input fasta, database fasta and taxonomy files.
 
 ## Prerequisities
