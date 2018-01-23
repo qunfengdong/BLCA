@@ -143,7 +143,7 @@ def read_tax_acc(taxfile,IDlen):
 		for l in tx:
 			lne=l.rstrip().strip(";").split("\t")
 			if len(lne)==2:
-				if len(lne[0] > IDlen):
+				if len(lne[0]) > IDlen:
 					print "Your reference sequence ID length longer than 32, please shorten your ID length and try again!! "
 					sys.exit(1)
 				else:
