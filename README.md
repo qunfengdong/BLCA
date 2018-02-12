@@ -181,7 +181,7 @@ CGCGCGACGAGCAAGCGCAAACGGCAACGCGCGAAACCCGCGAGCGAGA...
 $ makeblastdb -in YourDatabase.fasta -dbtype nucl -parse_seqids -out YourDatabase
 ```
 
-2. A taxonomy file with two columns, sequence ID in fasta file, and its taxonomy from superkingdom to species in the following format:
+2. A taxonomy file with two columns, sequence ID in fasta file, and its taxonomy from superkingdom to species in the following format (The deliminator between the sequence ID and taxonomy information should be a **tab [\t]**):
 ```
 NR_117221.1     species:Mycobacterium arosiense;genus:Mycobacterium;family:Mycobacteriaceae;order:Corynebacteriales;class:Actinobacteria;phylum:Actinobacteria;superkingdom:Bacteria;
 NR_144700.1     species:Virgibacillus massiliensis;genus:Virgibacillus;family:Bacillaceae;order:Bacillales;class:Bacilli;phylum:Firmicutes;superkingdom:Bacteria;
