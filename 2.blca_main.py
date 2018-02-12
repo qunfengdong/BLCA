@@ -138,16 +138,19 @@ def cut_gap(alndic,start,end):
 
 def read_tax_acc(taxfile,IDlen):
 	acctax={}
-	print ">  > Read in taxonomy information!"
+	print ">  > Reading in taxonomy information! ...."
 	with open(taxfile) as tx:
 		for l in tx:
 			lne=l.rstrip().strip(";").split("\t")
 			if len(lne)==2:
 				if len(lne[0]) > IDlen:
-					print "Your reference sequence ID length longer than 32, please shorten your ID length and try again!! "
+					print "ERROR: Your reference sequence ID length longer than 32, please shorten your ID length and try again!! "
 					sys.exit(1)
 				else:
 					acctax[lne[0].split(".")[0]]=dict( x.split(":",1) for x in lne[1].split(";"))
+	if len(acctax)==0:
+		print "ERROR: No taxonmy record was read in. Please examine the format of your taxonomy file according to the instruction on github."
+		sys.exit(1)
 	return acctax
 
 ##### parser ######
@@ -209,7 +212,7 @@ fsadic={}
 with open(args.fsa) as f:
 	for r in SeqIO.parse(f,"fasta"):
 		if len(r.id) > IDlenallow:
-			print "Your query ID length is longer than 32, please shorten your ID length and try again!!"
+			print "ERROR: Your query ID length is longer than 32, please shorten your ID length and try again!!"
 			sys.exit(1)
 		else:
 			fsadic[r.id] = str(r.seq)
