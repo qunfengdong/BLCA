@@ -17,6 +17,8 @@ We implemented the above algorithm as a simple python script here.
 * Linux
 * Biopython
 
+NOTE：if your system default python version is 3, you have to change the shebang line of every script from ```#!/usr/bin/env python``` to ```#!/usr/bin/env \<python2 executables\>```.
+
 ### **The following programs should be in your PATH:**
 
 * BLAST binary (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.5.0/)
