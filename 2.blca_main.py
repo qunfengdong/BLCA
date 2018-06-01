@@ -249,7 +249,7 @@ for ln in b:
 	else:
 		send+=args.gap
     ### calculate coverage ###
-	coverage=float(line[3])/float(line[15])
+	coverage=float(int(line[7])-int(line[6])+1)/float(line[15])
     ### filter hits ###
 	if evalue < args.eset and identity > args.iset and coverage >= args.cvrset and line[11]> args.bset:
 		giinfo[line[1]+":"+str(sstart)+"-"+str(send)]=[sstart,send,sstrand,bltscore,evalue,identity]
