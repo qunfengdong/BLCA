@@ -123,37 +123,53 @@ More options are the following:
 ```
 $ python 2.blca_main.py -h
 
-<< Bayesian-based LCA taxonomic classification method >>
+usage: 2.blca_main.py -i FSA [-x] [-n NPER] [-j NSUB] [-d TOPPER] [-e ESET]
+                      [-b BSET] [-c CVRSET] [--iset ISET] [-a ALIGN]
+                      [-m MATCH] [-f MISMATCH] [-g NGAP] [-r TAX] [-q DB]
+                      [-t GAP] [-o OUTFILE] [-p PROC] [-h]
+
+ << Bayesian-based LCA taxonomic classification method >>
 
    Please make sure the following softwares are in your PATH:
-	1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
-	2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+    1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
+    2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 	3.Biopython should be installed locally.
 
-Usage: python 2.blca_main.py -i <fasta file> [option]
+required arguments:
+  -i FSA, --fsa FSA     Input fasta file
 
- 
-Arguments:
- - Required:
-	-i		Input fasta file.
- - Taxonomy Profiling Options [filtering of hits]:
-	-n		Number of times to bootstrap. Default: 100
-	-j		Maximum number of subjects to include for each query reads. Default: 50
-	-d		Proportion of hits to include from top hit. Default: 0.1 [0-1]
-	-e		Minimum evalue to include for blastn. Default: 0.1
-	-a		Minimum bitscore to include for blastn hits. Default: 100
-	-c		Minimum coverage to include. Default: 0.85 [0-1]
-	-b		Minimum identity score to include. Default: 90 [0-100]
-	-r		Reference Taxonomy file for the Database. Default: db/16SMicrobial.ACC.taxonomy
-	-q		Refernece blast database. Default: db/16SMicrobial
-	-o		Output file name. Default: <fasta>.blca.out
- - Alignment Options:
-	-m		Alignment match score. Default: 1
-	-f		Alignment mismatch penalty. Default: -2.5
-	-g		Alignment gap penalty. Default: -2
- - Other:
-	-t		Extra number of nucleotides to include at the beginning and end of the hits. Default: 10
-	-h		Show program usage and quit
+taxonomy profiling options [filtering of hits]:
+  -x, --skipblast       skip blastn. Default: blastn is not skipped
+  -n NPER, --nper NPER  number of times to bootstrap. Default: 100
+  -j NSUB, --nsub NSUB  maximum number of subjects to include for each query reads. Default: 50
+  -d TOPPER, --topper TOPPER
+                        proportion of hits to include from top hit. Default: 0.1 [0-1]
+  -e ESET, --eset ESET  minimum evalue to include for blastn. Default: 0.1
+  -b BSET, --bset BSET  minimum bitscore to include for blastn hits. Default: 100
+  -c CVRSET, --cvrset CVRSET
+                        minimum coverage to include. Default: 0.85 [0-1]
+  --iset ISET           minimum identity score to include. Default: 90 [0-100]
+
+alignment control arguments:
+  -a ALIGN, --align ALIGN
+                        alignment tool: clustal omega or muscle. Default: clustalo
+  -m MATCH, --match MATCH
+                        alignment match score. Default: 1
+  -f MISMATCH, --mismatch MISMATCH
+                        alignment mismatch penalty. Default: -2.5
+  -g NGAP, --ngap NGAP  alignment gap penalty. Default: -2
+
+other arguments:
+  -r TAX, --tax TAX     reference taxonomy file for the Database. Default: db/16SMicrobial.ACC.taxonomy
+  -q DB, --db DB        refernece blast database. Default: db/16SMicrobial
+  -t GAP, --gap GAP     extra number of nucleotides to include at the beginning and end of the hits. Default: 10
+  -o OUTFILE, --outfile OUTFILE
+                        output file name. Default: <fasta>.blca.out
+  -p PROC, --proc PROC  how many processors are used. Default: 1 processor
+  -h, --help            show this help message and exit
+
+No warrenty comes with this script. Author: hlin2@luc.edu. 
+Any suggestions or bugs report are welcomed.
 ```
 
 ## Output
