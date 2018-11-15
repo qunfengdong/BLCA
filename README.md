@@ -133,7 +133,8 @@ usage: 2.blca_main.py -i FSA [-x] [-n NPER] [-j NSUB] [-d TOPPER] [-e ESET]
    Please make sure the following softwares are in your PATH:
     1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
     2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-	3.Biopython should be installed locally.
+	3.clustalo (http://www.clustal.org/omega/), clustalo should be the program's name.
+    4.Biopython should be installed locally.
 
 required arguments:
   -i FSA, --fsa FSA     Input fasta file
