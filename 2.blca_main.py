@@ -170,7 +170,7 @@ required = parser.add_argument_group('required arguments')
 required.add_argument("-i","--fsa", help="Input fasta file",type=str,required=True)
 ##### Taxonomy filtering arguments #####
 taxoptions = parser.add_argument_group('taxonomy profiling options [filtering of hits]')
-taxoptions.add_argument("-x","--blast",help="skip blastn. Default: blastn is not skipped",action='store_true')
+taxoptions.add_argument("-x","--skipblast",help="skip blastn. Default: blastn is not skipped",action='store_true')
 taxoptions.add_argument("-n","--nper",help="number of times to bootstrap. Default: 100",type=int,default=100)
 taxoptions.add_argument("-j","--nsub",help="maximum number of subjects to include for each query reads. Default: 50",type=int,default=50)
 taxoptions.add_argument("-d","--topper",help="proportion of hits to include from top hit. Default: 0.1 [0-1]",type=float_1range,default=0.1)
@@ -222,7 +222,7 @@ fsadic={}
 with open(args.fsa) as f:
     for r in SeqIO.parse(f,"fasta"):
         if len(r.id) > IDlenallow:
-            print("ERROR: Your query ID length is longer than 32, please shorten your ID length and try again!!")
+            print("ERROR: Your query ID length is longer than " + str(IDlenallow) + ", please shorten your ID length and try again!!")
             sys.exit(1)
         else:
             fsadic[r.id] = str(r.seq)
@@ -232,9 +232,9 @@ print(">  > Fasta file read in!")
 acc2tax=read_tax_acc(args.tax,IDlen=IDlenallow)
 
 ## Run blastn and output fas.blastn output
-if not args.blast:
+if not args.skipblast:
     run_blastn(args.fsa,args.eset,args.nsub,args.db,args.proc)
-elif args.blast:
+elif args.skipblast:
     print(">  > blastn is skipped")
 
 ## read in blastn output
