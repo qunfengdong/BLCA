@@ -163,7 +163,9 @@ def read_tax_acc(taxfile,IDlen):
 parser = argparse.ArgumentParser(description=
 ''' << Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your PATH:
     1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
-    2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)\n\t3.Biopython should be installed locally.''',
+    2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+    3.clustalo (http://www.clustal.org/omega/), clustalo should be the program's name.
+    4.Biopython should be installed locally.''',
     epilog="No warrenty comes with this script. Author: hlin2@luc.edu. \nAny suggestions or bugs report are welcomed.",add_help=False,formatter_class=argparse.RawTextHelpFormatter)
 ##### Required arguments #####
 required = parser.add_argument_group('required arguments')
