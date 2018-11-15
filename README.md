@@ -5,23 +5,23 @@ Bayesian LCA-based Taxonomic Classification Method (BLCA) is a Bayesian-based me
 We implemented the above algorithm as a simple python script here.
 
 ## Update
+* **Nov 15 2018 update** Thanks to Kristjan's contribution, now we incoperated the use of clustalo as alignment software. Also, now BLCA is based on **python 3**.
 * **May 11 2017 update** to be compatiable for the latest blastn v2.5 and added a new parameter -j to limit the accepted hits number to 50. After another round of testing, we've decided to change the default value of coverage and identify filter to 0.80 and 90 respectively.
 
 ## Important Note -- Please do read
+* BLCA is migrating from python 2.7 to **3**. So the software can be unstable. **We highly recommend users to install from release (https://github.com/qunfengdong/BLCA/releases) instead of using the dynamic version during our testing period.**
 * BLCA currently is only compatiable with **blast 2.5.0+**, please make sure you have blast 2.5.0 or above. 
-* Read ID and Reference genome ID length should be both not more than **32** due to limited ID space in muscle output. 
 * There should **NOT** be any "|" (pipe) present in the sequence ID of input fasta, database fasta and taxonomy files.
 
 ## Prerequisities
-* Python 2.7
+* Python 3 and above
 * Linux
 * Biopython
-
-NOTE：if your system default python version is 3, you have to change the shebang line of every script from ```#!/usr/bin/env python``` to ```#!/usr/bin/env <python2.7 executable>```.
 
 ### **The following programs should be in your PATH:**
 
 * BLAST binary (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.5.0/)
+* clustalo (http://www.clustal.org/omega/)
 * MUSCLE (http://www.drive5.com/muscle/downloads.htm)
 
 ## Citation
