@@ -7,12 +7,11 @@ __license__ = "GPL"
 __version__ = "2.1"
 __maintainer__ = "Huaiying Lin"
 __email__ = "hlin2@luc.edu"
-__status__ = "Production"
+__status__ = "Python3"
 
 
-import sys
 import os
-import math
+import sys
 
 try:
     from Bio import AlignIO,SeqIO
@@ -21,11 +20,10 @@ except ImportError:
     sys.exit(1)
 
 import random
-import subprocess
 import argparse
 
 import time
-start = time.time()
+startTime = time.time()
 
 '''
 BLCA Core annotation tool
@@ -182,7 +180,7 @@ taxoptions.add_argument("-c","--cvrset",help="minimum coverage to include. Defau
 taxoptions.add_argument("--iset",help="minimum identity score to include. Default: 90 [0-100]",type=float_100range,default=90.0)
 ##### Alignment control arguments #####
 alignoptions = parser.add_argument_group('alignment control arguments')
-alignoptions.add_argument("-a","--align",default='clustalo',help="alignment tool: clustal omega or muscle. Default: clustalo",type=str)
+alignoptions.add_argument("-a","--align",default='clustalo',help="alignment tool: clustal omega or muscle. Default: clustalo",type=str, choices = ["clustalo","muscle"])
 alignoptions.add_argument("-m","--match",default=1.0,help="alignment match score. Default: 1",type=float)
 alignoptions.add_argument("-f","--mismatch",default=-2.5,help="alignment mismatch penalty. Default: -2.5",type=float)
 alignoptions.add_argument("-g","--ngap",default=-2.0,help="alignment gap penalty. Default: -2",type=float)
@@ -192,7 +190,7 @@ optional.add_argument("-r","--tax",default='./db/16SMicrobial.ACC.taxonomy',help
 optional.add_argument("-q","--db",default='./db/16SMicrobial',help="refernece blast database. Default: db/16SMicrobial",type=str)
 optional.add_argument("-t","--gap",default=10,help="extra number of nucleotides to include at the beginning and end of the hits. Default: 10",type=int)
 optional.add_argument("-o","--outfile",help="output file name. Default: <fasta>.blca.out",type=str)
-optional.add_argument("-p","--proc",default=1,help="how many processors are used. Default: 1 processor",type=int)
+optional.add_argument("-p","--proc",default=2,help="how many processors are used in blastn step. Default: 2 processors",type=int)
 optional.add_argument("-h","--help",help="show this help message and exit",action="help")
 ##### parse arguments #####
 args = parser.parse_args()
@@ -284,8 +282,8 @@ b.close()
 print(">  > blast output read in")
 
 print(">  > Start aligning reads...")
-print("Cut offs")
-print("evalue:",args.eset,"identity:", args.iset, "coverage:", args.cvrset)
+#print("Cut offs")
+#print("evalue:",args.eset,"identity:", args.iset, "coverage:", args.cvrset)
 #print qtosdic.values()
 os.system("rm -f "+args.outfile)
 outout=open(args.outfile,'w+')
@@ -391,5 +389,5 @@ for seqn in fsadic.keys():
 outout.close()
 print(">  > Taxonomy file generated!!")
 
-end = time.time()
-print("Time elapsed: %i minutes" % (round((end - start)/60)))
+endTime = time.time()
+print("Time elapsed: %i minutes" % (round((endTime - startTime)/60)))

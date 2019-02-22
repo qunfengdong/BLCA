@@ -9,7 +9,7 @@ We implemented the above algorithm as a simple python script here.
 * **May 11 2017 update** to be compatiable for the latest blastn v2.5 and added a new parameter -j to limit the accepted hits number to 50. After another round of testing, we've decided to change the default value of coverage and identify filter to 0.80 and 90 respectively.
 
 ## Important Note -- Please do read
-* BLCA is migrating from python 2.7 to **3**. So the software can be unstable. **We highly recommend users to install from release (https://github.com/qunfengdong/BLCA/releases) instead of using the dynamic version during our testing period.**
+* BLCA has migrated to **Python 3**. If you'd like to use python2.7, please install from release (https://github.com/qunfengdong/BLCA/releases).
 * BLCA currently is only compatiable with **blast 2.5.0+**, please make sure you have blast 2.5.0 or above. 
 * There should **NOT** be any "|" (pipe) present in the sequence ID of input fasta, database fasta and taxonomy files.
 
@@ -52,24 +52,27 @@ More options available:
 ```
 $ python 1.subset_db_acc.py -h
 
-<< Bayesian-based LCA taxonomic classification method >>
+usage: 1.subset_db_acc.py [--dir DIR] [-d DATABASE] [--taxdmp TAXDMP]
+                          [--taxdb TAXDB] [-h]
+
+ << Bayesian-based LCA taxonomic classification method >>
 
    Please make sure the following softwares are in your PATH:
-	1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
-	2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-	3.Biopython is installed locally.
+		 1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
+		 2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+		 3.clustalo (http://www.clustal.org/omega/), clustalo should be the program's name.
+		 4.Biopython should be installed locally.
 
-   This is the utility script to format 16S Microbial Database from NCBI before running the BLCA taxonomy profiling. This could be used for other subsets of NCBI formatted database for blast too.
+optional arguments:
+  --dir DIR             The local directory name where you want to store the formatted database. Default: db
+  -d DATABASE, --database DATABASE
+                        The database link that you want to download from and format. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/16SMicrobial.tar.gz
+  --taxdmp TAXDMP       The taxonomy database dmp link from NCBI. Default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip
+  --taxdb TAXDB         The taxonomy database db link from NCBI. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz
+  -h, --help            show this help message and exit
 
-Usage: python 1.subset_db_acc.py
-
-Arguments:
- - Optional:
-	-d		The database link that you want to download from and format. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/16SMicrobial.tar.gz.
-	-t		The taxonomy database link from NCBI. Default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip.
-	-u		The taxdb from NCBI. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz 
- - Other:
-	-h		Show program usage and quit
+No warrenty comes with this script. Author: hlin2@luc.edu. 
+Any suggestions or bugs report are welcomed.
 ```
 During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, and taxdmp.zip will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.ACC.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
 
@@ -84,23 +87,27 @@ More options available:
 ```
 $ python 1.subset_db_gg.py -h
 
-<< Bayesian-based LCA taxonomic classification method >>
+usage: 1.subset_db_gg.py [--dir DIR] [--ggfasta GGFASTA] [--ggtax GGTAX] [-h]
+
+ << Bayesian-based LCA taxonomic classification method >>
 
    Please make sure the following softwares are in your PATH:
-	1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
-	2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-	3.Biopython is installed locally.
+		 1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
+		 2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+		 3.clustalo (http://www.clustal.org/omega/), clustalo should be the program's name.
+		 4.Biopython should be installed locally.
+		 
+		 This is the utility script to format Greengene Database before running the BLCA taxonomy profiling.
+		 >> Please first download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5.
 
-   This is the utility script to format Greengene Database before running the BLCA taxonomy profiling.
+optional arguments:
+  --dir DIR          The local directory name where you want to store the formatted database. Default: gg
+  --ggfasta GGFASTA  The GreenGene database fasta file. Default: gg_13_5.fasta.gz
+  --ggtax GGTAX      The GreenGene database taxonomy file. Default: gg_13_5_taxonomy.txt.gz
+  -h, --help         show this help message and exit
 
-Usage: python 1.subset_db_gg.py
-
-Arguments:
- - Optional:
-	-d		The database file that you want to format. Default: gg_13_5.fasta.gz.
-	-t		The taxonomy database link from Greengenes. Default: gg_13_5_taxonomy.txt.gz. 
- - Other:
-	-h		Show program usage and quit
+No warrenty comes with this script. Author: hlin2@luc.edu. 
+Any suggestions or bugs report are welcomed.
 ```
 ### Split input fasta (Optional)
 * If you have a big fasta file, and you want to run BLCA in "parallel", you can use [this python package](https://pypi.python.org/pypi/pyfasta/#command-line-interface) to split fasta sequences into multiple parts, then run BLCA on each individual part.
@@ -133,7 +140,7 @@ usage: 2.blca_main.py -i FSA [-x] [-n NPER] [-j NSUB] [-d TOPPER] [-e ESET]
    Please make sure the following softwares are in your PATH:
     1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
     2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-	3.clustalo (http://www.clustal.org/omega/), clustalo should be the program's name.
+    3.clustalo (http://www.clustal.org/omega/), clustalo should be the program's name.
     4.Biopython should be installed locally.
 
 required arguments:
@@ -166,7 +173,7 @@ other arguments:
   -t GAP, --gap GAP     extra number of nucleotides to include at the beginning and end of the hits. Default: 10
   -o OUTFILE, --outfile OUTFILE
                         output file name. Default: <fasta>.blca.out
-  -p PROC, --proc PROC  how many processors are used. Default: 1 processor
+  -p PROC, --proc PROC  how many processors are used in blastn step. Default: 2 processors
   -h, --help            show this help message and exit
 
 No warrenty comes with this script. Author: hlin2@luc.edu. 
