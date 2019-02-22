@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 
+__author__ = "Xiang Gao, Huaiying Lin, Qunfeng Dong"
+__copyright__ = "Copyright 2016, Bayesian-based LCA taxonomic classification"
+__credits__ = ["Xiang Gao", "Huaiying Lin","Qunfeng Dong"]
+__license__ = "GPL"
+__version__ = "1.2"
+__maintainer__ = "Huaiying Lin"
+__email__ = "hlin2@luc.edu"
+__status__ = "Python3"
+
+
 import sys
 import math
 import glob
@@ -7,58 +17,53 @@ import re
 import os
 import getopt
 import subprocess
-
-__author__ = "Xiang Gao, Huaiying Lin, Qunfeng Dong"
-__copyright__ = "Copyright 2016, Bayesian-based LCA taxonomic classification"
-__credits__ = ["Xiang Gao", "Huaiying Lin","Qunfeng Dong"]
-__license__ = "GPL"
-__version__ = "1.2"
-__maintainer__ = "Huaiying Lin"
-__email__ = "ying.eddi2008@gmail.com"
-__status__ = "Production"
+import argparse
 
 '''
 
-Get a subset of lineage information from NCBI 16S Microbial database.
+Get a subset of lineage information from GreenGene Microbial database.
 
 '''
 
-def usage():
-        print "\n<< Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your PATH:\n\t1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.\n\t2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)\n\t3.Biopython is installed locally.\n"
-        print "   This is the utility script to format Greengene Database before running the BLCA taxonomy profiling.\n"
-        print 'Usage: python '+sys.argv[0]+'\n'
-        print "Arguments:\n - Optional:"
-        print "\t-d\t\tThe database file that you want to format. Default: gg_13_5.fasta.gz.\n\t-t\t\tThe taxonomy database link from Greengenes. Default: gg_13_5_taxonomy.txt.gz. \n - Other:"
-        print "\t-h\t\tShow program usage and quit"
+##### parser ######
+
+parser = argparse.ArgumentParser(description=
+	 ''' << Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your PATH:
+		 1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
+		 2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+		 3.clustalo (http://www.clustal.org/omega/), clustalo should be the program's name.
+		 4.Biopython should be installed locally.
+		 
+		 This is the utility script to format Greengene Database before running the BLCA taxonomy profiling.
+		 >> Please first download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5.''',
+	 epilog="No warrenty comes with this script. Author: hlin2@luc.edu. \nAny suggestions or bugs report are welcomed.",
+	 add_help=False, formatter_class=argparse.RawTextHelpFormatter)
+##### Other arguments #####
+optional = parser.add_argument_group('optional arguments')
+optional.add_argument("--dir", default='gg',
+					  help="The local directory name where you want to store the formatted database. Default: gg", type=str)
+optional.add_argument("--ggfasta", default='gg_13_5.fasta.gz',
+					  help="The GreenGene database fasta file. Default: gg_13_5.fasta.gz", type=str)
+optional.add_argument("--ggtax", default='gg_13_5_taxonomy.txt.gz',
+					  help="The GreenGene database taxonomy file. Default: gg_13_5_taxonomy.txt.gz", type=str)
+optional.add_argument("-h","--help",help="show this help message and exit",action="help")
+##### parse arguments #####
+args = parser.parse_args()
 
 dbfsafile='gg_13_5.fasta.gz'
 dbtaxfile='gg_13_5_taxonomy.txt.gz'
 
 
-#### Get options ####
-opts, args=getopt.getopt(sys.argv[1:],"d:t:u:h",['Database','fsadb','taxdb','help'])
-for o,a in opts:
-        if o == "-d":
-                dbfsafile=a
-        elif o == "-t":
-                dbtaxfile=a
-        elif o in ('-h','--help'):
-                print usage()
-                sys.exit()
-        else:
-                assert False, 'unhandle option'
-
 ################ Function ##############
 
 def check_program(prgname):
-        '''Check whether a program has been installed and put in the PATH'''
-        import os
-        path=os.popen("which "+prgname).read().rstrip()
-        if len(path) > 0 and os.path.exists(path):
-                print prgname+" is located in your PATH!"
-        else:
-                print "ERROR: "+prgname+" is NOT in your PATH, please set up "+prgname+"!"
-                sys.exit(1)
+	'''Check whether a program has been installed and put in the PATH'''
+	path=os.popen("which "+prgname).read().rstrip()
+	if len(path) > 0 and os.path.exists(path):
+		print(prgname+" is located in your PATH!")
+	else:
+		print("ERROR: "+prgname+" is NOT in your PATH, please set up "+prgname+"!")
+		sys.exit(1)
 
 
 def format_gg_taxfile(taxfile,folder):
@@ -69,46 +74,46 @@ def format_gg_taxfile(taxfile,folder):
 	outtaxfile=''.join(outtaxname[:len(outtaxname)-1:])+".taxonomy"
 	if os.path.isfile(outtaxfile):
 		os.remove(outtaxfile)
-	taxout=open(folder+'/'+outtaxfile,'aw')
+	taxout=open(folder+'/'+outtaxfile,'w')
 	for l in taxin:
 		ln=l.rstrip().replace(" ","").split("\t")
 		taxout.write(ln[0]+"\t")
-		tmp=dict(x.split("__") for x in ln[1].split(";"))
-		for k in tmp.keys():
-			tmp[leveldic[k]]=tmp.pop(k)
-		for key, val in tmp.items():
-			taxout.write(key+':'+val+";")
-		taxout.write("\n")
+		if len(ln) > 2:
+			tmp=dict(x.split("__") for x in ln[1].split(";"))
+			for k in tmp:
+				tmp[leveldic[k]]=tmp.pop(k)
+			for key, val in tmp.items():
+				taxout.write(key+':'+val+";")
+			taxout.write("\n")
 	taxin.close()
 	taxout.close()
-	print ">> "+taxfile+" has been formatted and outputted!"
+	print(">> "+taxfile+" has been formatted and outputted!")
 
 def make_blastdb(dbfsa,folder):
 	''' Format downloaded Greengenes sequence fasta files into blast compatiable format '''
 	check_program('makeblastdb')
 	dbname=folder+'/'+dbfsa.rstrip('.fasta')
 	subprocess.call(['makeblastdb','-dbtype',"nucl",'-in',folder+'/'+dbfsa,'-parse_seqids','-out',dbname])
-	print dbfsa+" has been formatted!"
+	print(dbfsa+" has been formatted!")
 
 def ungz(file,folder):
 	fname=file.rstrip('.gz')
 	os.system("gzip -dc "+file+" > "+folder+"/"+fname)
-	print fname+" has been unzipped!"
+	print(fname+" has been unzipped!")
 
 ######## MAIN ###########
 
-foldername='gg'
+if __name__ == "__main__":
+	os.system('rm -fr '+args.dir)
+	os.system('mkdir '+args.dir)
 
-os.system('rm -fr '+foldername)
-os.system('mkdir '+foldername)
+	ungz(args.ggfasta,args.dir)
+	ungz(args.ggtax,args.dir)
 
-ungz(dbfsafile,foldername)
-ungz(dbtaxfile,foldername)
+	taxfile=args.ggfasta.rstrip('.gz')
+	dbfsa=args.ggtax.rstrip('.gz')
 
-taxfile=dbtaxfile.rstrip('.gz')
-dbfsa=dbfsafile.rstrip('.gz')
-
-format_gg_taxfile(taxfile,foldername)
-make_blastdb(dbfsa,foldername)
+	format_gg_taxfile(taxfile,args.dir)
+	make_blastdb(dbfsa,args.dir)
 
 
