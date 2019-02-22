@@ -5,16 +5,17 @@ Bayesian LCA-based Taxonomic Classification Method (BLCA) is a Bayesian-based me
 We implemented the above algorithm as a simple python script here.
 
 ## Update
-* **Nov 15 2018 update** Thanks to Kristjan's contribution, now we incoperated the use of clustalo as alignment software. Also, now BLCA is based on **python 3**.
-* **May 11 2017 update** to be compatiable for the latest blastn v2.5 and added a new parameter -j to limit the accepted hits number to 50. After another round of testing, we've decided to change the default value of coverage and identify filter to 0.80 and 90 respectively.
+* **Feb 21 2019 update** The entire package has been updated to python 3.
+* **Nov 15 2018 update** Thanks to Kristjan's contribution, now we incorporated the use of clustalo as alignment software. Also, now BLCA main program is based on **python 3**.
+* **May 11 2017 update** to be compatible for the latest blastn v2.5 and added a new parameter -j to limit the accepted hits number to 50. After another round of testing, we've decided to change the default value of coverage and identify filter to 0.80 and 90 respectively.
 
 ## Important Note -- Please do read
 * BLCA has migrated to **Python 3**. If you'd like to use python2.7, please install from release (https://github.com/qunfengdong/BLCA/releases).
-* BLCA currently is only compatiable with **blast 2.5.0+**, please make sure you have blast 2.5.0 or above. 
+* BLCA currently is only compatible with **blast 2.5.0+**, please make sure you have blast 2.5.0 or above. 
 * There should **NOT** be any "|" (pipe) present in the sequence ID of input fasta, database fasta and taxonomy files.
 
 ## Prerequisities
-* Python 3 and above
+* Python 3
 * Linux
 * Biopython
 
@@ -39,7 +40,7 @@ After the github repository is cloned, you will find a folder named BLCA. All th
 
 ## Quick start
 
-We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_acc.py_ (or 1.subset_db_gg.py). After the database is built and stored on your local machine, you will supply the loction of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca_main.py_, then you will get a blca output as test.fasta.blca.out.
+We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_acc.py_ (or 1.subset_db_gg.py). After the database is built and stored on your local machine, you will supply the location of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca_main.py_, then you will get a blca output as test.fasta.blca.out.
 
 ## Getting started
 
@@ -77,7 +78,7 @@ Any suggestions or bugs report are welcomed.
 During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, and taxdmp.zip will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.ACC.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
 
 ### Alternative Step 1
-* To format Greengenes database, first you have to download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA folder, please run:
+* To format GreenGenes database, first you have to download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA folder, please run:
 ```
 $ python 1.subset_db_gg.py
 ```
@@ -222,7 +223,7 @@ $ python 2.blca_main.py -i test.fasta -r /location/to/your/database/YourDatabase
 ```
 
 ## Version
-* Version 2.1 An alternative public release
+* Version 2.2 An alternative public release
 
 ## Authors
 * Dr. Xiang Gao, theoretical conception and algorithm development
