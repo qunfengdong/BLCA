@@ -187,7 +187,7 @@ for ln in na:
 	if line[3]=="scientific name" and line[0] in nalist:
 		namesdic[line[0]]=line[1:4]
 	id+=1
-	if id%20000==0:
+	if id%50000==0:
 		print(">> ", id, "names recorded!")
 na.close()
 print(">> Loading names.dmp...DONE!")
