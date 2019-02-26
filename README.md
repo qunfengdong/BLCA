@@ -5,6 +5,7 @@ Bayesian LCA-based Taxonomic Classification Method (BLCA) is a Bayesian-based me
 We implemented the above algorithm as a simple python script here.
 
 ## Update
+* **Feb 26 2019 update** One utility script (generate_abundance_table.py) for merging multiple BLCA output is available in the utils folder.
 * **Feb 21 2019 update** The entire package has been updated to python 3.
 * **Nov 15 2018 update** Thanks to Kristjan's contribution, now we incorporated the use of clustalo as alignment software. Also, now BLCA main program is based on **python 3**.
 * **May 11 2017 update** to be compatible for the latest blastn v2.5 and added a new parameter -j to limit the accepted hits number to 50. After another round of testing, we've decided to change the default value of coverage and identify filter to 0.80 and 90 respectively.
@@ -240,5 +241,6 @@ GNU
 
 ## Acknowledgements
 * BLAST program: Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421.
+* Clustal Omega: Sievers, Fabian, Andreas Wilm, David Dineen, Toby J. Gibson, Kevin Karplus, Weizhong Li, Rodrigo Lopez et al. "Fast, scalable generation of high‐quality protein multiple sequence alignments using Clustal Omega." Molecular systems biology 7, no. 1 (2011): 539.
 * MUSCLE: Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput.Nucleic Acids Res. 32(5):1792-1797. doi:10.1093/nar/gkh340
 * Biopython: Cock PA, Antao T, Chang JT, Bradman BA, Cox CJ, Dalke A, Friedberg I, Hamelryck T, Kauff F, Wilczynski B and de Hoon MJL (2009) Biopython: freely available Python tools for computational molecular biology and bioinformatics. Bioinformatics, 25, 1422-1423
