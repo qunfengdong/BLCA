@@ -35,7 +35,7 @@ parser = argparse.ArgumentParser(description=
 		 4.Biopython should be installed locally.
 		 
 		 This is the utility script to format Greengene Database before running the BLCA taxonomy profiling.
-		 >> Please first download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5.''',
+		 >> Please first download the Greengenes fasta and taxonomy files from https://greengenes.secondgenome.com/?prefix=downloads/greengenes_database/gg_13_5/.''',
 	 epilog="No warrenty comes with this script. Author: hlin2@luc.edu. \nAny suggestions or bugs report are welcomed.",
 	 add_help=False, formatter_class=argparse.RawTextHelpFormatter)
 ##### Other arguments #####
@@ -49,10 +49,6 @@ optional.add_argument("--ggtax", default='gg_13_5_taxonomy.txt.gz',
 optional.add_argument("-h","--help",help="show this help message and exit",action="help")
 ##### parse arguments #####
 args = parser.parse_args()
-
-dbfsafile='gg_13_5.fasta.gz'
-dbtaxfile='gg_13_5_taxonomy.txt.gz'
-
 
 ################ Function ##############
 
@@ -90,7 +86,7 @@ def format_gg_taxfile(taxfile,folder):
 	print(">> "+taxfile+" has been formatted and outputted!")
 
 def make_blastdb(dbfsa,folder):
-	''' Format downloaded Greengenes sequence fasta files into blast compatiable format '''
+	''' Format downloaded Greengenes sequence fasta files into blast compatible format '''
 	check_program('makeblastdb')
 	dbname=folder+'/'+dbfsa.rstrip('.fasta')
 	subprocess.call(['makeblastdb','-dbtype',"nucl",'-in',folder+'/'+dbfsa,'-parse_seqids','-out',dbname])
@@ -110,8 +106,8 @@ if __name__ == "__main__":
 	ungz(args.ggfasta,args.dir)
 	ungz(args.ggtax,args.dir)
 
-	taxfile=args.ggfasta.rstrip('.gz')
-	dbfsa=args.ggtax.rstrip('.gz')
+	dbfsa=args.ggfasta.rstrip('.gz')
+	taxfile=args.ggtax.rstrip('.gz')
 
 	format_gg_taxfile(taxfile,args.dir)
 	make_blastdb(dbfsa,args.dir)
