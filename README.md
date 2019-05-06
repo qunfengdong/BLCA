@@ -100,7 +100,7 @@ usage: 1.subset_db_gg.py [--dir DIR] [--ggfasta GGFASTA] [--ggtax GGTAX] [-h]
 		 4.Biopython should be installed locally.
 		 
 		 This is the utility script to format Greengene Database before running the BLCA taxonomy profiling.
-		 >> Please first download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5.
+		 >> Please first download the Greengenes fasta and taxonomy files from https://greengenes.secondgenome.com/?prefix=downloads/greengenes_database/gg_13_5/.
 
 optional arguments:
   --dir DIR          The local directory name where you want to store the formatted database. Default: gg
