@@ -79,7 +79,7 @@ Any suggestions or bugs report are welcomed.
 During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, and taxdmp.zip will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.ACC.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
 
 ### Alternative Step 1
-* To format GreenGenes database, first you have to download the Greengenes fasta and taxonomy files from http://greengenes.secondgenome.com/downloads/database/13_5. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA folder, please run:
+* To format GreenGenes database, first you have to download the Greengenes fasta and taxonomy files from https://greengenes.secondgenome.com/?prefix=downloads/greengenes_database/gg_13_5/. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA folder, please run:
 ```
 $ python 1.subset_db_gg.py
 ```
