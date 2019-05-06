@@ -73,10 +73,11 @@ def format_gg_taxfile(taxfile,folder):
 	taxout=open(folder+'/'+outtaxfile,'w')
 	for l in taxin:
 		ln=l.rstrip().replace(" ","").split("\t")
-		taxout.write(ln[0]+"\t")
-		if len(ln) > 2:
-			tmp=dict(x.split("__") for x in ln[1].split(";"))
-			for k in tmp:
+		if len(ln) == 2:
+			taxout.write(ln[0] + "\t")
+			tmp = dict(x.split("__") for x in ln[1].split(";"))
+			oldnames = list(tmp.keys())
+			for k in oldnames:
 				tmp[leveldic[k]]=tmp.pop(k)
 			for key, val in tmp.items():
 				taxout.write(key+':'+val+";")
