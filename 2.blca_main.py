@@ -63,7 +63,6 @@ def run_blastn(fsa,eset,nsub,db,proc):
     check_program("blastn")
     import subprocess
     print("> > Running blast!!")
-    #subprocess.call(['blastn','-query',fsa,'-evalue',str(eset),'-dust','no','-soft_masking','false','-db',db,'-num_threads',str(proc),'-outfmt','6 std score sstrand slen qlen','-max_target_seqs',str(nsub),'-out',fsa+'.blastn'])
     subprocess.call(['blastn','-query',fsa,'-evalue',str(eset),'-perc_identity','90','-soft_masking','false','-db',db,'-num_threads',str(proc),'-outfmt','6 std score sstrand slen qlen','-max_target_seqs',str(nsub),'-out',fsa+'.blastn'])
     print("> > Blastn Finished!!")
 
@@ -152,19 +151,19 @@ def read_tax_acc(taxfile,IDlen):
                 else:
                     acctax[lne[0].split(".")[0]]=dict( x.split(":",1) for x in lne[1].split(";"))
     if len(acctax)==0:
-        print("ERROR: No taxonmy record was read in. Please examine the format of your taxonomy file according to the instruction on github.")
+        print("ERROR: No taxonomy record was read in. Please examine the format of your taxonomy file according to the instruction on GitHub.")
         sys.exit(1)
     return acctax
 
 ##### parser ######
     
 parser = argparse.ArgumentParser(description=
-''' << Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your PATH:
+''' << Bayesian-based LCA taxonomic classification method >>\n\n   Please make sure the following softwares are in your $PATH:
     1.muscle (http://www.drive5.com/muscle/downloads.htm), muscle should be the program's name.
     2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
     3.clustalo (http://www.clustal.org/omega/), clustalo should be the program's name.
     4.Biopython should be installed locally.''',
-    epilog="No warrenty comes with this script. Author: hlin2@luc.edu. \nAny suggestions or bugs report are welcomed.",add_help=False,formatter_class=argparse.RawTextHelpFormatter)
+    epilog="No warrenty comes with this script. Author: hlin2@luc.edu. \nAny suggestions or bug reports are welcomed.",add_help=False,formatter_class=argparse.RawTextHelpFormatter)
 ##### Required arguments #####
 required = parser.add_argument_group('required arguments')
 required.add_argument("-i","--fsa", help="Input fasta file",type=str,required=True)
@@ -186,8 +185,8 @@ alignoptions.add_argument("-f","--mismatch",default=-2.5,help="alignment mismatc
 alignoptions.add_argument("-g","--ngap",default=-2.0,help="alignment gap penalty. Default: -2",type=float)
 ##### Other arguments #####
 optional = parser.add_argument_group('other arguments')
-optional.add_argument("-r","--tax",default='./db/16SMicrobial.ACC.taxonomy',help="reference taxonomy file for the Database. Default: db/16SMicrobial.ACC.taxonomy",type=str)
-optional.add_argument("-q","--db",default='./db/16SMicrobial',help="refernece blast database. Default: db/16SMicrobial",type=str)
+optional.add_argument("-r","--tax",default='./db/16SMicrobial.ACC.taxonomy',help="reference taxonomy file for the database. Default: db/16SMicrobial.ACC.taxonomy",type=str)
+optional.add_argument("-q","--db",default='./db/16SMicrobial',help="reference blast database. Default: db/16SMicrobial",type=str)
 optional.add_argument("-t","--gap",default=10,help="extra number of nucleotides to include at the beginning and end of the hits. Default: 10",type=int)
 optional.add_argument("-o","--outfile",help="output file name. Default: <fasta>.blca.out",type=str)
 optional.add_argument("-p","--proc",default=2,help="how many processors are used in blastn step. Default: 2 processors",type=int)
@@ -287,9 +286,10 @@ print(">  > Start aligning reads...")
 #print qtosdic.values()
 os.system("rm -f "+args.outfile)
 outout=open(args.outfile,'w+')
+
+# TODO: Find out why subspecies is missing from this calculation
 levels=["superkingdom","phylum","class","order","family","genus","species"]
 for seqn in fsadic.keys():
-# for k1,v1 in qtosdic.items():
     k1=seqn
     if k1 in qtosdic and k1 not in acc2tax:
         v1=qtosdic[k1]
@@ -330,7 +330,6 @@ for seqn in fsadic.keys():
             mxk=[k3 for k3,v3 in tmpdic.items() if v3 == mx]
             if len(mxk)==1:
                 if max(tmpdic,key=tmpdic.get) in pervote:
-                #if pervote.has_key(max(tmpdic,key=tmpdic.get)):  # has_key removed from python 3
                     pervote[max(tmpdic,key=tmpdic.get)]+=float(1)
                 else:
                     pervote[max(tmpdic,key=tmpdic.get)]=float(1)
@@ -338,7 +337,6 @@ for seqn in fsadic.keys():
                 por=float(1)/len(mxk)
                 for h in mxk:
                     if h in pervote:
-                    #if pervote.has_key(h):
                         pervote[h]+=por
                     else:
                         pervote[h]=por
