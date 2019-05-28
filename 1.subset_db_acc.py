@@ -32,7 +32,7 @@ parser = argparse.ArgumentParser(description=
 		 2.ncbi-blast suite (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 		 3.clustalo (http://www.clustal.org/omega/), clustalo should be the program's name.
 		 4.Biopython should be installed locally.''',
-	 epilog="No warrenty comes with this script. Author: hlin2@luc.edu. \nAny suggestions or bugs report are welcomed.",
+	 epilog="No warranty comes with this script. Author: hlin2@luc.edu. \nAny suggestions or bug reports are welcomed.",
 	 add_help=False, formatter_class=argparse.RawTextHelpFormatter)
 ##### Other arguments #####
 optional = parser.add_argument_group('optional arguments')
@@ -103,7 +103,7 @@ def gi_taxid_nucl(fsa,gi_taxid_dmp):
     outmap.close()
 
 def check_program(prgname):
-	'''Check whether a program has been installed and put in the PATH'''
+	'''Check whether a program has been installed and put in the $PATH'''
 	import os
 	path=os.popen("which "+prgname).read().rstrip()
 	if len(path) > 0 and os.path.exists(path):
