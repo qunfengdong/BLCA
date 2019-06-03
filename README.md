@@ -5,6 +5,7 @@ Bayesian LCA-based Taxonomic Classification Method (BLCA) is a Bayesian-based me
 We implemented the above algorithm as a simple python script here.
 
 ## Update
+* **June 3 2019** Minor update of 2.blca_main.py to fix the hidden 100% confidence score.
 * **May 9 2019** Minor update to 1.subset_db_gg.py to include a new function to extract only sequences with full taxonomy information.
 * **Feb 26 2019 update** One utility script (generate_abundance_table.py) for merging multiple BLCA output is available in the utils folder.
 * **Feb 21 2019 update** The entire package has been updated to python 3.
@@ -34,7 +35,7 @@ We implemented the above algorithm as a simple python script here.
 ## Install
 To check out the source code, go to https://github.com/qunfengdong/BLCA. To obtain the scripts and example fasta files, do the following:
 
-```shell
+```
 $ git clone https://github.com/qunfengdong/BLCA.git
 ```
 
@@ -81,13 +82,13 @@ During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, 
 
 ### Alternative Step 1
 * To format GreenGenes database, first you have to download the Greengenes fasta and taxonomy files from https://greengenes.secondgenome.com/?prefix=downloads/greengenes_database/gg_13_5/. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA folder, please run:
-```bash
+```
 $ python 1.subset_db_gg.py
 ```
 This script will unzip the downloaded files and create a new folder called "gg" to store all needed information.
 
 More options available:
-```bash
+```
 $ python 1.subset_db_gg.py -h
 usage: 1.subset_db_gg.py [--dir DIR] [--ggfasta GGFASTA] [--ggtax GGTAX] [-t]
                          [-h]
@@ -113,25 +114,36 @@ optional arguments:
 No warrenty comes with this script. Author: hlin2@luc.edu. 
 Any suggestions or bugs report are welcomed.
 ```
+### SILVA LSU database (Credit to Dr. Daniel Swan)
+
+Thanks to Dr. Swan's personal effort to build a BLCA-compatible blastn-database and taxonomy file for SILVA LSU database. Please download the pre-compiled database at this [link]("https://drive.google.com/drive/folders/1t0TzC08y7_LyglsdihaXu27oWr7PiKLe").
+
+* After you've downloaded the SILVA LSU fasta and taxonomy file, you will need to format the fasta file as the following:
+
+``` 
+makeblastdb -in SILVA_132_LSURef_tax_silva_BLCAparsed.fasta -dbtype nucl -parse_seqids -out SILVA_132_LSURef_tax_silva_BLCAparsed.fasta
+```
+* Then you can follow the instructions in the [Training your own database](#training-your-own-database) section.
+
 ### Split input fasta (Optional)
 * If you have a big fasta file, and you want to run BLCA in "parallel", you can use [this python package](https://pypi.python.org/pypi/pyfasta/#command-line-interface) to split fasta sequences into multiple parts, then run BLCA on each individual part.
 
 ### Step 2 
 * Run your analysis with the compiled database. Please run:
-```bash
+``` 
 $ python 2.blca_main.py -i test.fasta
 ```
 If you are running your analysis somewhere else other than in the BLCA directory, please do the following:
-```bash
+```
 $ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/16SMicrobial.ACC.taxonomy -q /location/to/your/database/16SMicrobial
 ```
 If you are using the Greengene database as your reference, please do the following:
-```bash
+```
 $ python /location/to/2.blca_main.py -i test.fasta -r gg/gg_13_5_taxonomy.taxonomy -q gg/gg_13_5
 ```
 
 More options are the following:
-```bash
+```
 $ python 2.blca_main.py -h
 
 usage: 2.blca_main.py -i FSA [-x] [-n NPER] [-j NSUB] [-d TOPPER] [-e ESET]
@@ -202,7 +214,7 @@ seq96	Unclassified
 
 * BLCA main script 2.blca_main.py needs 
 1. A BLAST formatted library from a fasta file containing sequences of your interest, using makeblastdb, as the following:
-```bash
+```
 >NR_117221.1
 AGTCGATCGATCGATCATCGCTCTCTAGAGAGAAAACCCGATCGATCGA...
 >NR_144700.1
