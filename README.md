@@ -118,7 +118,7 @@ Any suggestions or bugs report are welcomed.
 
 Thanks to Dr. Swan's personal effort to build a BLCA-compatible blastn-database and taxonomy file for SILVA LSU database. 
 
-* Download the pre-compiled database at this [link]("https://drive.google.com/drive/folders/1t0TzC08y7_LyglsdihaXu27oWr7PiKLe").
+* Download the pre-compiled database at this [link](https://drive.google.com/drive/folders/1t0TzC08y7_LyglsdihaXu27oWr7PiKLe).
 
 * After you've downloaded the SILVA LSU fasta and taxonomy file, you will need to format the fasta file as the following:
 
