@@ -341,8 +341,7 @@ for seqn in fsadic.keys():
         os.system("rm " + k1 + ".dblist")
         ### Run alignment ###
         if args.align == "clustalo":
-            os.system(
-                "clustalo --threads=" + str(args.proc) + " --outfmt=clu -i " + k1 + ".hitdb.fsa -o " + k1 + ".aln")
+            os.system("clustalo --threads=" + str(args.proc) + " --outfmt=clu -i " + k1 + ".hitdb.fsa -o " + k1 + ".aln")
         if args.align == "muscle":
             os.system("muscle -quiet -clw -in " + k1 + ".hitdb.fsa -out " + k1 + ".aln")
         alndic = get_dic_from_aln(k1 + ".aln")
@@ -363,6 +362,7 @@ for seqn in fsadic.keys():
             perdict[j] = tmpdic
             mx = max(tmpdic.values())
             mxk = [k3 for k3, v3 in tmpdic.items() if v3 == mx]
+            ### check if there are multiple max hits ###
             if len(mxk) == 1:
                 if max(tmpdic, key=tmpdic.get) in pervote:
                     pervote[max(tmpdic, key=tmpdic.get)] += float(1)
@@ -379,12 +379,11 @@ for seqn in fsadic.keys():
         ttlvote = sum(pervote.values())
         for k4, v4 in pervote.items():
             pervote[k4] = v4 / ttlvote * 100
-            ###
+        ### hit taxnomy parsing ###
         hitstax = {}
         for k5, v5 in orgscore.items():
-            shortk5 = k5.split(".")[0]
+            shortk5 = k5.split(":")[0].split(".")[0]
             if shortk5 in acc2tax:
-                # if acc2tax.has_key(shortk5):
                 k2tax = acc2tax[shortk5]
                 mistx = list(set(levels) - set(k2tax.keys()))
                 for mis in mistx:
@@ -402,7 +401,6 @@ for seqn in fsadic.keys():
             for d in range(len(lex)):
                 # print voten[d]
                 if lex[d] in lexsum:
-                    # if lexsum.has_key(lex[d]):
                     lexsum[lex[d]] += voten[d]
                     prosum[lex[d]] += prbn[d]
                 else:
