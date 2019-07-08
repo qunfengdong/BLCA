@@ -15,7 +15,7 @@ We implemented the above algorithm as a simple python script here.
 
 ## Important Note -- Please do read
 * BLCA has migrated to **Python 3**. If you'd like to use python2.7, please install from release (https://github.com/qunfengdong/BLCA/releases).
-* BLCA currently is only compatible with **blast 2.5.0+**, please make sure you have blast 2.5.0 or above. 
+* BLCA currently is compatible with **blast 2.9.0+**, please make sure you have the latest blast: version 2.9.0 or above. 
 * There should **NOT** be any "|" (pipe) present in the sequence ID of input fasta, database fasta and taxonomy files.
 
 ## Prerequisities
