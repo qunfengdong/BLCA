@@ -387,7 +387,7 @@ for seqn in fsadic.keys():
                 k2tax = acc2tax[shortk5]
                 mistx = list(set(levels) - set(k2tax.keys()))
                 for mis in mistx:
-                    k2tax[mis] = "Not_Available"
+                    k2tax[mis] = "NA"
                 if k5 not in pervote:
                     pervote.update({k5: 0})
                 hitstax[k5] = [k2tax, pervote[k5], orgscore[k5]]
