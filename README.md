@@ -5,7 +5,7 @@ Bayesian LCA-based Taxonomic Classification Method (BLCA) is a Bayesian-based me
 We implemented the above algorithm as a simple python script here.
 
 ## Update
-* **Sep 16 2019** Minor update of 2.blca_main.py to fix minus strand range from Blastn output (credit to [Carter Hoffman](hoffmanc@ohsu.edu)).
+* **Sep 16 2019** Minor update of 2.blca_main.py to fix minus strand range from Blastn output (credit to Carter Hoffman <hoffmanc@ohsu.edu>).
 * **Jul 8 2019** Minor update of 2.blca_main.py to fix clustalo's compatibility issue with blast 2.9.0.
 * **Jun 3 2019** Minor update of 2.blca_main.py to fix the hidden 100% confidence score bug.
 * **May 9 2019** Minor update to 1.subset_db_gg.py to include a new function to extract only sequences with full taxonomy information.
