@@ -330,8 +330,11 @@ for seqn in fsadic.keys():
         ### Get all the hits list belong to the same query ###
         msafsa = open(k1 + ".dblist", 'w')
         for g in v1:
-            msafsa.write(
-                g.split(":")[0] + " " + str(giinfo[g][0]) + "-" + str(giinfo[g][1]) + " " + giinfo[g][2] + "\n")
+            # if blastn returns hits on minus strand, reverse sstart and send positions in -range arg
+            if giinfo[g][1] < giinfo[g][0]:
+                msafsa.write(g.split(":")[0] + " " + str(giinfo[g][1]) + "-" + str(giinfo[g][0]) + " " + giinfo[g][2] + "\n")
+            else:
+                msafsa.write(g.split(":")[0] + " " + str(giinfo[g][0]) + "-" + str(giinfo[g][1]) + " " + giinfo[g][2] + "\n")
         msafsa.close()
         os.system("blastdbcmd -db " + args.db + " -entry_batch " + k1 + ".dblist -outfmt %f > " + k1 + ".hitdb.fsa")
         ### Add query fasta sequence to extracted hit fasta ###
