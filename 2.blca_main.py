@@ -210,10 +210,10 @@ alignoptions.add_argument("-f", "--mismatch", default=-2.5, help="alignment mism
 alignoptions.add_argument("-g", "--ngap", default=-2.0, help="alignment gap penalty. Default: -2", type=float)
 ##### Other arguments #####
 optional = parser.add_argument_group('other arguments')
-optional.add_argument("-r", "--tax", default='./db/16SMicrobial.ACC.taxonomy',
-                      help="reference taxonomy file for the Database. Default: db/16SMicrobial.ACC.taxonomy", type=str)
-optional.add_argument("-q", "--db", default='./db/16SMicrobial',
-                      help="refernece blast database. Default: db/16SMicrobial", type=str)
+optional.add_argument("-r", "--tax", default='./db/16S_ribosomal_RNA.ACC.taxonomy',
+                      help="reference taxonomy file for the Database. Default: db/16S_ribosomal_RNA.taxonomy", type=str)
+optional.add_argument("-q", "--db", default='./db/16S_ribosomal_RNA',
+                      help="refernece blast database. Default: db/16S_ribosomal_RNA", type=str)
 optional.add_argument("-t", "--gap", default=10,
                       help="extra number of nucleotides to include at the beginning and end of the hits. Default: 10",
                       type=int)
