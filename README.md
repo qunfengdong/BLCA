@@ -250,6 +250,16 @@ $ python 2.blca_main.py -i test.fasta -r /location/to/your/database/YourDatabase
 * Huaiying Lin, program coding and testing
 * Kashi Revanna, program coding and package development
 
+## Frequently asked questions
+
+* What threshold should I use for the confidence score?
+0.8
+
+* What should I do if I see "Error while loading shared libraries: ..." when running BLCA?
+This error is caused because your system lack the specified shared library. There are two things you can do:
+1. Reinstall blca, make sure all modules and dependencies are installed correctly. 
+2. Ask your system administrator to install or provide access to the specified shared library. Then add its path to your $PATH, or copy it to your $PATH.
+
 ## Error report
 
 Please report any errors or bugs to hlin2@luc.edu.
