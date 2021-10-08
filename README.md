@@ -61,9 +61,9 @@ After the github repository is cloned, you will find a folder named BLCA. All th
 We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_acc.py_ (or 1.subset_db_gg.py). After the database is built and stored on your local machine, you will supply the location of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca_main.py_, then you will get a blca output as test.fasta.blca.out.
 
 ## Getting started
-To use the standard NCBI 16S microbial database, please go to Step 1. 
-To use GreenGenes database, please go to Alternative Step 1. 
-To use pre-compiled SILVA LSU database, please go to "SILVA LSU database".
+To use the standard NCBI 16S microbial database, please go to Step 1. <br>
+To use GreenGenes database, please go to Alternative Step 1. <br>
+To use pre-compiled SILVA LSU database, please go to "SILVA LSU database".<br>
 To use a custom database, please go to "Custom database".
 
 ### Step 1
