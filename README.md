@@ -26,7 +26,7 @@ We implemented the above algorithm as a simple python script here.
 
 ### **The following programs should be in your PATH:**
 
-* BLAST binary (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.9.0/)
+* BLAST binary (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.9.0/ or above)
 * clustalo (http://www.clustal.org/omega/)
 * MUSCLE (http://www.drive5.com/muscle/downloads.htm)
 
@@ -80,7 +80,7 @@ optional arguments:
 No warrenty comes with this script. Author: hlin2@luc.edu. 
 Any suggestions or bugs report are welcomed.
 ```
-During the process of setting up the database, NCBI's 16SMicrobial.tar.gz file, and taxdmp.zip will be downloaded into a default folder: ./db/, and uncompressed. 16SMicrobial.ACC.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
+During the process of setting up the database, NCBI's 16S_ribosomal_RNA.tar.gz file, and taxdmp.zip will be downloaded into a default folder: ./db/, and uncompressed. 16S_ribosomal_RNA.ACC.taxonomy under the ./db directory is the taxonomy file should be supplied to the 2.blca_main.py as the database. 
 
 ### Alternative Step 1
 * To format GreenGenes database, first you have to download the Greengenes fasta and taxonomy files from https://greengenes.secondgenome.com/?prefix=downloads/greengenes_database/gg_13_5/. The files you need are gg_13_5.fasta.gz and gg_13_5_taxonomy.txt.gz. After you make sure you download the targeted two files under BLCA folder, please run:
