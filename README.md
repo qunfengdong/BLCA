@@ -19,6 +19,19 @@ We implemented the above algorithm as a simple python script here.
 * BLCA currently is compatible with **blast 2.9.0+**, please make sure you have the latest blast: version 2.9.0 or above. 
 * There should **NOT** be any "|" (pipe) present in the sequence ID of input fasta, database fasta and taxonomy files.
 
+## Frequently asked questions
+
+* What threshold should I use for the confidence score?<br>
+0.8
+
+* What should I do if I see "Error while loading shared libraries: ..." when running BLCA?<br>
+This error is caused because your system lack the specified shared library. There are two things you can do:<br>
+Ask your system administrator to install or provide access to the specified shared library. Then add its path to your $PATH, or copy it to your $PATH. (recommended) <br>
+Or reinstall blca, make sure all modules and dependencies are installed correctly.
+
+* What should I do if I see something like "ValueError: max() arg is an empty sequence"?<br>
+This error is caused because the format of your database is wrong. If you are using custom database, please refer to "Custom database" section for the correct format of the database files.
+
 ## Prerequisities
 * Python 3
 * Linux
@@ -48,6 +61,10 @@ After the github repository is cloned, you will find a folder named BLCA. All th
 We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_acc.py_ (or 1.subset_db_gg.py). After the database is built and stored on your local machine, you will supply the location of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca_main.py_, then you will get a blca output as test.fasta.blca.out.
 
 ## Getting started
+To use the standard NCBI 16S microbial database, please go to Step 1. 
+To use GreenGenes database, please go to Alternative Step 1. 
+To use pre-compiled SILVA LSU database, please go to "SILVA LSU database".
+To use a custom database, please go to "Custom database".
 
 ### Step 1
 * To compile, subset the 16S Microbial database. Please run:
@@ -59,7 +76,7 @@ More options available:
 $ python 1.subset_db_acc.py -h
 
 usage: 1.subset_db_acc.py [--dir DIR] [-d DATABASE] [--taxdmp TAXDMP]
-                          [--taxdb TAXDB] [-h]
+                          [-h]
 
  << Bayesian-based LCA taxonomic classification method >>
 
@@ -74,7 +91,6 @@ optional arguments:
   -d DATABASE, --database DATABASE
                         The database link that you want to download from and format. Default: https://ftp.ncbi.nlm.nih.gov/blast/db/16S_ribosomal_RNA.tar.gz
   --taxdmp TAXDMP       The taxonomy database dmp link from NCBI. Default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip
-  --taxdb TAXDB         The taxonomy database db link from NCBI. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz
   -h, --help            show this help message and exit
 
 No warrenty comes with this script. Author: hlin2@luc.edu. 
@@ -116,6 +132,7 @@ optional arguments:
 No warrenty comes with this script. Author: hlin2@luc.edu. 
 Any suggestions or bugs report are welcomed.
 ```
+
 ### SILVA LSU database (Credit to Dr. Daniel Swan)
 
 Thanks to Dr. Swan's personal effort to build a BLCA-compatible blastn-database and taxonomy file for SILVA LSU database. 
@@ -129,21 +146,47 @@ $ makeblastdb -in SILVA_132_LSURef_tax_silva_BLCAparsed.fasta -dbtype nucl -pars
 ```
 * Then you can follow the instructions in the [Training your own database](#training-your-own-database) section.
 
+### Custom database
+
+To use a custom database, a taxonomy file in the following format and a blastn database need to be generated.
+
+1. Taxonomy file:
+The format must be ID column + taxonomy column (in the format of "species:xxx;genus:xxx;...") separated by **tab**.
+For the taxonomy column, the taxonomy rank must be present and followed by ":", and followed by the name of that taxonomy rank, and followed by ";".
+
+```
+NR_170391.1	species:Azospirillum ramasamyi;genus:Azospirillum;family:Azospirillaceae;order:Rhodospirillales;class:Alphaproteobacteria;phylum:Proteobacteria;superkingdom:Bacteria;
+NR_170392.1	species:Erysipelothrix piscisicarius;genus:Erysipelothrix;family:Erysipelotrichaceae;order:Erysipelotrichales;class:Erysipelotrichia;phylum:Firmicutes;superkingdom:Bacteria;
+NR_170393.1	species:Erysipelothrix piscisicarius;genus:Erysipelothrix;family:Erysipelotrichaceae;order:Erysipelotrichales;class:Erysipelotrichia;phylum:Firmicutes;superkingdom:Bacteria;
+NR_170394.1	species:Erysipelothrix piscisicarius;genus:Erysipelothrix;family:Erysipelotrichaceae;order:Erysipelotrichales;class:Erysipelotrichia;phylum:Firmicutes;superkingdom:Bacteria;
+NR_170395.1	species:Sphingorhabdus lacus;genus:Sphingorhabdus;family:Sphingomonadaceae;order:Sphingomonadales;class:Alphaproteobacteria;phylum:Proteobacteria;superkingdom:Bacteria;
+```
+
+2. Blastn database file:
+This file can be generated by fasta file with record IDs the same as the taxonomy file. Use the following command:
+
+``` 
+$ makeblastdb -in <input_fasta> -parse_seqids -blastdb_version 5 -title "custom_db_title" -dbtype nucl
+```
 ### Split input fasta (Optional)
 * If you have a big fasta file, and you want to run BLCA in "parallel", you can use [this python package](https://pypi.python.org/pypi/pyfasta/#command-line-interface) to split fasta sequences into multiple parts, then run BLCA on each individual part.
 
 ### Step 2 
-* Run your analysis with the compiled database. Please run:
+* Run your analysis with the compiled database. For default database in default directory, please run:
 ``` 
 $ python 2.blca_main.py -i test.fasta
 ```
 If you are running your analysis somewhere else other than in the BLCA directory, please do the following:
 ```
-$ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/16SMicrobial.ACC.taxonomy -q /location/to/your/database/16SMicrobial
+$ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/16S_ribosomal_RNA.ACC.taxonomy -q /location/to/your/database/16S_ribosomal_RNA
 ```
 If you are using the Greengene database as your reference, please do the following:
 ```
 $ python /location/to/2.blca_main.py -i test.fasta -r gg/gg_13_5_taxonomy.taxonomy -q gg/gg_13_5
+```
+If you are using custom database, please do the following:
+```
+$ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/your_taxonomy_file -q /location/to/your/database/database_name
 ```
 
 More options are the following:
@@ -249,16 +292,6 @@ $ python 2.blca_main.py -i test.fasta -r /location/to/your/database/YourDatabase
 * Dr. Qunfeng Dong, algorithm development
 * Huaiying Lin, program coding and testing
 * Kashi Revanna, program coding and package development
-
-## Frequently asked questions
-
-* What threshold should I use for the confidence score?<br>
-0.8
-
-* What should I do if I see "Error while loading shared libraries: ..." when running BLCA?<br>
-This error is caused because your system lack the specified shared library. There are two things you can do:<br>
-Ask your system administrator to install or provide access to the specified shared library. Then add its path to your $PATH, or copy it to your $PATH. (recommended) <br>
-Or reinstall blca, make sure all modules and dependencies are installed correctly.
 
 ## Error report
 

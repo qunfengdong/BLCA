@@ -41,8 +41,6 @@ optional.add_argument("-d", "--database", default='https://ftp.ncbi.nlm.nih.gov/
                       help="The database link that you want to download from and format. Default: https://ftp.ncbi.nlm.nih.gov/blast/db/16S_ribosomal_RNA.tar.gz", type=str)
 optional.add_argument("--taxdmp", default='ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip',
                                           help="The taxonomy database dmp link from NCBI. Default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip", type=str)
-optional.add_argument("--taxdb", default="ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz",
-                      help="The taxonomy database db link from NCBI. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz", type=str)
 optional.add_argument(
     "-h", "--help", help="show this help message and exit", action="help")
 ##### parse arguments #####
