@@ -37,7 +37,7 @@ parser = argparse.ArgumentParser(description=''' << Bayesian-based LCA taxonomic
 optional = parser.add_argument_group('optional arguments')
 optional.add_argument("--dir", default='db',
                       help="The local directory name where you want to store the formatted database. Default: db", type=str)
-optional.add_argument("-d", "--database", default='ftp://ftp.ncbi.nlm.nih.gov/blast/db/16S_ribosomal_RNA.tar.gz',
+optional.add_argument("-d", "--database", default='https://ftp.ncbi.nlm.nih.gov/blast/db/16S_ribosomal_RNA.tar.gz',
                       help="The database link that you want to download from and format. Default: https://ftp.ncbi.nlm.nih.gov/blast/db/16S_ribosomal_RNA.tar.gz", type=str)
 optional.add_argument("--taxdmp", default='ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip',
                                           help="The taxonomy database dmp link from NCBI. Default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip", type=str)
