@@ -61,10 +61,10 @@ After the github repository is cloned, you will find a folder named BLCA. All th
 We do not include a pre-compiled database with this release, so the first step is to build a taxonomy database from the NCBI 16S microbial database. We achieve this by using script _1.subset_db_acc.py_ (or 1.subset_db_gg.py). After the database is built and stored on your local machine, you will supply the location of the taxonomy output file (16SMicrobial.taxID.taxonomy) from the last step along with your input fasta file (test.fasta) to _2.blca_main.py_, then you will get a blca output as test.fasta.blca.out.
 
 ## Getting started
-To use the standard NCBI 16S microbial database, please go to Step 1. <br>
-To use GreenGenes database, please go to Alternative Step 1. <br>
-To use pre-compiled SILVA LSU database, please go to "SILVA LSU database".<br>
-To use a custom database, please go to "Custom database".
+* To use the standard NCBI 16S microbial database, please go to Step 1.
+* To use GreenGenes database, please go to Alternative Step 1.
+* To use pre-compiled SILVA LSU database, please go to "SILVA LSU database".
+* To use a custom database, please go to "Custom database".
 
 ### Step 1
 * To compile, subset the 16S Microbial database. Please run:
@@ -172,19 +172,21 @@ $ makeblastdb -in <input_fasta> -parse_seqids -blastdb_version 5 -title "custom_
 * If you have a big fasta file, and you want to run BLCA in "parallel", you can use [this python package](https://pypi.python.org/pypi/pyfasta/#command-line-interface) to split fasta sequences into multiple parts, then run BLCA on each individual part.
 
 ### Step 2 
-* Run your analysis with the compiled database. For default database in default directory, please run:
+Run your analysis with the compiled database. 
+
+* For default database in default directory, please run:
 ``` 
 $ python 2.blca_main.py -i test.fasta
 ```
-If you are running your analysis somewhere else other than in the BLCA directory, please do the following:
+* If you are running your analysis somewhere else other than in the BLCA directory, please do the following:
 ```
 $ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/16S_ribosomal_RNA.ACC.taxonomy -q /location/to/your/database/16S_ribosomal_RNA
 ```
-If you are using the Greengene database as your reference, please do the following:
+* If you are using the Greengene database as your reference, please do the following:
 ```
 $ python /location/to/2.blca_main.py -i test.fasta -r gg/gg_13_5_taxonomy.taxonomy -q gg/gg_13_5
 ```
-If you are using custom database, please do the following:
+* If you are using custom database, please do the following:
 ```
 $ python /location/to/2.blca_main.py -i test.fasta -r /location/to/your/database/your_taxonomy_file -q /location/to/your/database/database_name
 ```
