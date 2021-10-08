@@ -72,7 +72,7 @@ usage: 1.subset_db_acc.py [--dir DIR] [-d DATABASE] [--taxdmp TAXDMP]
 optional arguments:
   --dir DIR             The local directory name where you want to store the formatted database. Default: db
   -d DATABASE, --database DATABASE
-                        The database link that you want to download from and format. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/16SMicrobial.tar.gz
+                        The database link that you want to download from and format. Default: https://ftp.ncbi.nlm.nih.gov/blast/db/16S_ribosomal_RNA.tar.gz
   --taxdmp TAXDMP       The taxonomy database dmp link from NCBI. Default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip
   --taxdb TAXDB         The taxonomy database db link from NCBI. Default: ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz
   -h, --help            show this help message and exit
