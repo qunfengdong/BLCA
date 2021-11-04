@@ -294,6 +294,7 @@ $ python 2.blca_main.py -i test.fasta -r /location/to/your/database/YourDatabase
 * Dr. Qunfeng Dong, algorithm development
 * Huaiying Lin, program coding and testing
 * Kashi Revanna, program coding and package development
+* Dr. Yue Xing, current program developer and maintainer
 
 ## Error report
 
