@@ -133,19 +133,6 @@ No warrenty comes with this script. Author: hlin2@luc.edu.
 Any suggestions or bugs report are welcomed.
 ```
 
-### SILVA LSU database (Credit to Dr. Daniel Swan)
-
-Thanks to Dr. Swan's personal effort to build a BLCA-compatible blastn-database and taxonomy file for SILVA LSU database. 
-
-* Download the pre-compiled database at this [link](https://drive.google.com/drive/folders/1t0TzC08y7_LyglsdihaXu27oWr7PiKLe).
-
-* After you've downloaded the SILVA LSU fasta and taxonomy file, you will need to format the fasta file as the following:
-
-``` 
-$ makeblastdb -in SILVA_132_LSURef_tax_silva_BLCAparsed.fasta -dbtype nucl -parse_seqids -out SILVA_132_LSURef_tax_silva_BLCAparsed.fasta
-```
-* Then you can follow the instructions in the [Training your own database](#training-your-own-database) section.
-
 ### Custom database
 
 To use a custom database, a taxonomy file in the following format and a blastn database need to be generated.
