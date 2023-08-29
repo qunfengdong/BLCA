@@ -4,9 +4,9 @@ __author__ = "Xiang Gao, Huaiying Lin, Qunfeng Dong"
 __copyright__ = "Copyright 2016, Bayesian-based LCA taxonomic classification"
 __credits__ = ["Xiang Gao", "Huaiying Lin", "Qunfeng Dong"]
 __license__ = "GPL"
-__version__ = "1.2"
-__maintainer__ = "Huaiying Lin"
-__email__ = "ying.eddi2008@gmail.com"
+__version__ = "1.3"
+__maintainer__ = "Qunfeng Dong"
+__email__ = "qunfengd@gmail.com"
 __status__ = "Python3"
 
 import sys
@@ -48,6 +48,8 @@ args = parser.parse_args()
 
 nodes = args.dir + '/nodes.dmp'
 names = args.dir + '/names.dmp'
+merged = args.dir + '/merged.dmp' #some NCBI taxIDs were merged together by the NCBI taxonomy database
+				#we need to use the one that are associated with lineage information
 
 ################ Function ##############
 
@@ -137,10 +139,20 @@ def get_db_gitaxid(url, dbstr):
 
 os.system("mkdir " + args.dir)
 get_taxdb(args.taxdmp, args.dir)
-
 get_db_gitaxid(args.database, args.dir)
-
 dbname = re.split(r'\.|\/+', args.database)[-3]
+
+
+#Find all the merged taxaID
+mergeddict = {}
+me = open(merged)
+for ln in me:
+    ln = ln.rstrip()
+    line = re.split('\|', ln)
+    key = line[0].strip()
+    value = line[1].strip()
+    mergeddict[key] = value
+me.close()
 
 ### Read in TaxID from the 16S Microbial Database ####
 tx = open(args.dir + "/" + dbname + ".ACCtaxID")
@@ -148,6 +160,8 @@ print("\n>> Loading " + dbname + " TaxID list...")
 g2txdic = {}
 for ln in tx:
     ln = ln.rstrip().split("|")
+    if ln[1] in mergeddict:
+        ln[1] = mergeddict[ln[1]]
     g2txdic[ln[0]] = ln[1]
 tx.close()
 
